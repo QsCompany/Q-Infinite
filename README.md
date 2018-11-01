@@ -1,4 +1,6 @@
-# QJs Framework
+# Q-Infinite Framework (اكبر منصة برمجية في العالم العربي و وإفريقيا)
+[![N|Solid](https://github.com/QsCompany/Q-Loader/raw/master/QDev.png)](https://www.QDev.dz/products/QLoader)
+
 *** QJs is a Core JavaScipt-Framework, without any dependency & fully costumizable with modern technologies
 
 #Technologies Implimented
