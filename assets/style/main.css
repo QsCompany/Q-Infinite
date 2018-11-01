@@ -1,0 +1,38 @@
+﻿.app {
+  --top-navbar-height: 50px;
+  --app-title-height: 75px;
+  --bottom-navbar-height: 30px;
+}
+.app {
+  display: grid;
+  grid-template-rows: var(--top-navbar-height) 1fr var(--bottom-navbar-height);
+  grid-template-areas: 'top-navbar' 'app-body' 'bottom-navbar';
+  grid-auto-flow: row;
+  padding: 0;
+  height: 100%;
+}
+.app .top-navbar {
+  grid-area: top-navbar;
+  align-self: stretch;
+  align-items: center;
+  position: relative;
+}
+.app .app-body {
+  display: grid;
+  grid-template-rows: var(--app-title-height) 1fr;
+  grid-template-areas: 'app-title' 'app-page';
+  grid-area: app-body;
+  align-items: stretch;
+  overflow-y: auto;
+}
+.app .app-body .app-title {
+  grid-area: app-title;
+  text-align: center;
+  vertical-align: middle;
+}
+.app .app-body .app-page {
+  grid-area: app-page;
+}
+.app .bottom-navbar {
+  grid-area: bottom-navbar;
+}

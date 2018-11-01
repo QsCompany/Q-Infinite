@@ -1,0 +1,77 @@
+﻿{
+  "tableDef": [
+    {
+      "Header": { "Attributes": { "style": "visibility: collapse;display:none;width:0px" } },
+      "Cell": {
+        "Attributes": {
+          "style": "visibility: collapse;display:none;width:0px",
+          "db-bind": "SoldTotal",
+          "db-twoway": true
+        }
+      },"editable": true
+    },
+    {
+      "Header": "Full Name",
+      "Cell": {
+        "Attributes": {
+          "db-bind": "FullName",
+          "db-job": "input",
+          "db-check": "text",
+          "db-twoway": true
+        }
+      },
+      "editable": true
+    },
+    {
+      "Header": "Tel",
+      "Cell": {
+        "Attributes": {
+          "db-bind": "Tel",
+          "db-job": "input",
+          "db-check": "tel",
+          "db-twoway": true
+        }
+      },
+      "editable": true
+    },
+    {
+      "Header": "Total Vendus",
+      "Cell": {
+        "Attributes": {
+          "db-bind": "MontantTotal",
+          "db-job": "number",
+          "db-twoway": true
+        }
+      }
+    },
+    {
+      "Header": "Total Versments",
+      "Cell": {
+        "Attributes": {
+          "db-bind": "VersmentTotal",
+          "db-job": "number",
+          "db-twoway": true
+        }
+      },
+      "editable": true
+    },
+    {
+      "Header": "Sold Total",
+      "Cell": {
+        "Attributes": {
+          "db-bind": "SoldTotal",
+          "db-job": "soldStatus",
+          "db-twoway": true
+        }
+      },
+      "editable": true
+    }
+  ],
+  "visibleCols": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ]
+}

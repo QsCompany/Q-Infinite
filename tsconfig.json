@@ -1,0 +1,29 @@
+{
+  "compileOnSave":true,"typeAcquisition": {"enable": true,"include": ["loadsh"]},
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noEmitOnError": false,
+    "removeComments": true,
+    "sourceMap": false,
+    "target": "es5",
+    "module": "amd",
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
+    //,"outDir": ".\\bin\\"
+    //,"declarationDir": ".\\bin\\"
+    //,    "outFile": "./bin/infiniteJs.js"
+    ,"outFile": "F:\\Test\\e-shop\\bin\\lib\\q\\infiniteJs.js"
+  },
+  "exclude": [
+    "node_modules",
+    "wwwroot",
+    "bin",
+    "obj",
+    "__bin",
+    "target",
+    "InfiniteJs.d.ts",
+    "InfiniteJs.js",
+    "InfiniteJs.js.map"
+  ]
+}

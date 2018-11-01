@@ -1,0 +1,25 @@
+﻿<templates>
+    <require module="../../sys/Corelib"></require>
+    <descriptor type="Components.MdIconGroup" name="IconGroup">
+        <template name="item">
+            <div class="menu-icon ripple">
+                <i class="material-icons" db-bind="iconName" db-job="label"></i>
+            </div>
+        </template>
+    </descriptor>
+    <descriptor type="Components.MdContextMenu" name="MdContextMenu" >
+        <template name="label">
+            <div class="label" db-bind="value" db-job="label">
+                Share:
+            </div>
+        </template>
+        <template name="menuitem">
+            <div class="menu-item">
+                <i class="material-icons" db-bind="iconName" db-job="label">content_paste</i>
+                <div class="ripple" db-bind="label" db-job="label">
+                    Paste
+                </div>
+            </div>
+        </template>
+    </descriptor>
+</templates>

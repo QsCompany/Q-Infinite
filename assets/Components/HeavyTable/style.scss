@@ -1,0 +1,101 @@
+﻿//colors
+$steel_blue: steelblue;
+$white: white;
+$color_calypso_approx: #38678f;
+$color_hippie_blue_approx: #568ebd;
+$color_celeste_approx: #cccccc;
+$color_link_water_approx: #d7e4ef;
+$black_20: rgba(0, 0, 0, 0.2);
+
+//fonts
+$font_0: Open Sans;
+$font_1: arial;
+
+.heavyTable-container {
+    background: $steel_blue;
+    font-family: $font_0, $font_1;
+    box-sizing: border-box;
+
+    table.heavyTable {
+        width: 100%;
+        max-width: 600px;
+        height: 320px;
+        border-collapse: collapse;
+        border: 1px solid $color_calypso_approx;
+        margin: 50px auto;
+        background: $white;
+
+        tr {
+            border-bottom: 1px solid $color_celeste_approx;
+
+            &:last-child {
+                border-bottom: 0;
+            }
+
+            & > th {
+                background: $steel_blue;
+                height: 54px;
+                width: 25%;
+                font-weight: lighter;
+                //Instead of the line below you could use @include text-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+                text-shadow: 0 1px 0 $color_calypso_approx;
+                color: $white;
+                border: 1px solid $color_calypso_approx;
+                //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+                box-shadow: inset 0 1px 2px $color_hippie_blue_approx;
+                //Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+                transition: all 0.2s;
+            }
+
+            & > td {
+                border-right: 1px solid $color_celeste_approx;
+                padding: 10px;
+                //Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+                transition: all 0.2s;
+
+                &:last-child {
+                    border-right: 0;
+                }
+
+                &.selected {
+                    background: $color_link_water_approx;
+                    z-index: auto;
+                }
+
+                input {
+                    font-size: 14px;
+                    background: none;
+                    outline: none;
+                    border: 0;
+                    display: table-cell;
+                    height: 100%;
+                    width: 100%;
+
+                    &:focus {
+                        //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+                        box-shadow: 0 1px 0 $steel_blue;
+                        color: $steel_blue;
+                    }
+                }
+            }
+        }
+
+
+        a {
+            color: $white;
+        }
+
+        ::-moz-selection {
+            background: $steel_blue;
+            color: $white;
+        }
+
+        ::selection {
+            background: $steel_blue;
+            color: $white;
+        }
+
+        box-shadow: 0 10px 30px $black_20;
+        animation: float 5s infinite;
+    }
+}

@@ -1,0 +1,59 @@
+[
+  {
+    "outputFileName": "bin/InfiniteJs.min.js",
+    "inputFiles": [
+      "bin/InfiniteJs.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true,
+      "preserveImportantComments": false,
+      "indentSize": 1,
+      "evalTreatment": "makeImmediateSafe"
+    }
+  },
+  {
+    "outputFileName": "bin/assets/modules/sw.min.js",
+    "inputFiles": [
+      "assets/modules/sw.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true,
+      "preserveImportantComments": false,
+      "indentSize": 1,
+      "evalTreatment": "makeImmediateSafe"
+    }
+  },
+  {
+    "outputFileName": "bin/assets/modules/worker.min.js",
+    "inputFiles": [
+      "assets/modules/worker.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true,
+      "preserveImportantComments": false,
+      "indentSize": 1,
+      "evalTreatment": "makeImmediateSafe"
+    }
+  },
+  {
+    "outputFileName": "bin/assets/style/bundle.css",
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine","adjustRelativePaths": false,"commentMode": "none","indentSize": 1
+    },
+    "inputFiles": [
+      "assets/style/bootstrap.min.css",
+      "assets/style/bootstrap-override.css",
+      "assets/style/app.css",
+      "assets/style/hbar.css",
+      "assets/style/aapp.css",
+      "assets/style/site.css"
+    ]
+  }
+]

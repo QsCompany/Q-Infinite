@@ -1,0 +1,189 @@
+﻿.inavPanel {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    font-size: 13px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto 1fr 10px;
+    grid-auto-flow:column;
+
+}
+
+
+.inavigation {
+    /*background-image: url("../common/bg.png");*/
+    padding-right: 20px;
+    border-collapse: collapse;
+    border-right: 1px solid #38678f;
+    background: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: float 5s infinite;
+}
+
+.icontent {
+    width: 100%;
+    display: grid;
+    background-color: white;
+    padding-left: 10px;
+}
+
+.icaption {
+  color: rgb(92, 97, 102);
+  font-size: 150%;
+  padding-bottom: 10px;
+  padding-left: 20px;
+}
+
+.itab-header {
+  -webkit-border-start: 6px solid transparent;
+  padding-left: 15px;
+  font-size:100%;
+}
+
+.itab-header.selected {
+  -webkit-border-start-color: rgb(78, 87, 100);
+}
+
+.itab-header > button {
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  line-height: 17px;
+  margin: 6px 0;
+  padding: 0 2px;
+}
+
+.itab-header:not(.selected) > button {
+  color: black;
+}
+
+.icontent > div {
+  /*padding: 0 20px 65px 0;*/
+}
+
+.icontent-header {
+  background:  linear-gradient(white, white 40%, rgba(255, 255, 255, 0.92));
+  border-bottom: 1px solid #eee;
+  font-size: 150%;
+  padding: 20px 0 10px 0;
+  z-index: 1;
+  min-width:600px;
+
+}
+
+
+@media (max-width: 47em) {
+  .inavigation,
+  .icontent {
+    overflow: visible;
+  }
+}
+@media (min-width: 47em) {
+  .inavPanel {
+    max-height: 100vh;
+  }
+  .inavigation,
+  .icontent {
+    max-height: 100vh;
+    overflow: auto;
+  }
+}
+/*****/
+.inavigation,
+.icontent {
+    max-height: 100vh;
+    overflow: auto;
+    overflow: visible;
+}
+/*****/
+idialog {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    width: -webkit-fit-content;
+    height: -webkit-fit-content;
+    color: black;
+    margin: auto;
+    border-width: initial;
+    border-style: solid;
+    border-color: initial;
+    border-image: initial;
+    padding: 1em;
+    background: white;
+}
+idialog.config {
+    background: white;
+    border: 0;
+    border-radius: 3px;
+    box-shadow: 0 4px 23px 5px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0,0,0,0.15);
+    color: #333;
+    padding: 17px 17px 12px;
+    position: relative;
+}
+idialog.config > .ilist {
+    border: 1px solid #eee;
+    height: 180px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    overflow-x: hidden;
+}
+.iconfig-list-row {
+    -webkit-flex-direction: row;
+    display: -webkit-flex;
+}
+input {
+    -webkit-appearance: textfield;
+    background-color: white;
+    -webkit-rtl-ordering: logical;
+    user-select: text;
+    cursor: auto;
+    padding: 1px;
+    border-width: 2px;
+    border-style: inset;
+    border-color: initial;
+    border-image: initial;
+}
+
+.iconfig-list-row .iclose-button {
+    margin: 8px 8px;
+}
+
+.iclose-button {
+    background-image: url(/img/IDR_CLOSE_DIALOG.png);
+    height: 14px;
+    width: 14px;
+}
+
+.iconfig-list-row:not(.selected) .iclose-button:not(:hover) {
+    opacity: 0.5;
+}
+
+.iconfig-list-row.fresh .close-button
+ ,.iconfig-list-row:not(.selected):not(:hover)
+ .iclose-button:not(:hover) 
+{
+    background-image: none;
+    pointer-events: none;
+}
+.iconfig-list-row input ,select {
+    border: 1px solid transparent;
+    line-height: 20px;
+    margin: 4px;
+    min-width: 0;
+    padding: 0 3px;
+}
+.iconfig-list-row input.port {
+    width: 4em;
+}
+.iconfig-list-row input.location ,select.location {
+    -webkit-flex: 1;
+    width: 100%;
+}
+.iconfig-list-row.fresh:not(.selected) input ,select {
+    border-color: #eee;
+}
+
+.nav-panel > .nav > li > a {
+    padding: 5px;
+}

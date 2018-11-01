@@ -1,0 +1,321 @@
+﻿/*   Context Menu */
+.rc-context-menu  * {
+    box-sizing: content-box;
+}
+.rc-context-menu {
+    font-family: 'Roboto', sans-serif;
+    padding: 6px 0;
+    max-width: 240px;
+    max-height: 320px;
+    opacity: 1;
+    z-index: 100000;
+    position: absolute;
+    left: -1000%;
+    overflow-X: hidden;
+    overflow-Y: auto;
+    white-space: nowrap;
+    background: #fff;
+    box-shadow: 0 2px 4px 1px rgba(0,0,0,0.1), 0 0 20px rgba(0,0,0,0.1);
+    margin: 1px;
+    transition: max-width 0.5s -0.1s, max-height 0.5s -0.1s, opacity 0.5s;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    box-sizing:content-box;
+}
+
+    .rc-context-menu.hidden {
+        max-width: 0;
+        max-height: 0;
+        opacity: 0.3;
+        overflow: hidden;
+        transition: max-width 0.2s 0.2s, max-height 0.2s 0.2s, opacity 0.5s 0.2s;
+    }
+
+    .rc-context-menu i {
+        color: #333;
+    }
+
+    .rc-context-menu .menu-item {
+        padding: 12px 24px 12px 30px;
+        min-width: 198px;
+        width: 100%;
+        font-size: 15px;
+        height: 16px;
+        position: relative;
+        overflow: hidden;
+        color: #333;
+        box-shadow: 4px 0 rgba(0,0,0,0) inset;
+        cursor: pointer;
+        transition: all 0.2s, background 0.5s, box-shadow 0.5s;
+    }
+
+        .rc-context-menu .menu-item div {
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 12px 24px 12px 48px;
+        }
+
+        .rc-context-menu .menu-item i {
+            display: inline-block;
+            position: absolute;
+            top: 8px;
+            left: 16px;
+        }
+
+        .rc-context-menu .menu-item:hover {
+            background-color: rgba(0,0,0,0.2);
+            box-shadow: 4px 0 rgba(0,0,0,0.25) inset;
+        }
+
+        .rc-context-menu .menu-item:active {
+            background-color: rgba(0,0,0,0.25);
+            box-shadow: 4px 0 rgba(0,0,0,0.4) inset;
+        }
+
+    .rc-context-menu:not(.hidden) .icon-group {
+        flex-wrap: wrap;
+    }
+
+    .rc-context-menu .icon-group {
+        width: 100%;
+        display: flex;
+    }
+
+        .rc-context-menu .icon-group .menu-icon {
+            display: inline-flex;
+            flex-grow: 1;
+            padding: 12px;
+            min-width: 16px;
+            height: 16px;
+            font-size: 15px;
+            position: relative;
+            overflow: hidden;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+            .rc-context-menu .icon-group .menu-icon:hover {
+                background: rgba(0,0,0,0.17);
+            }
+
+            .rc-context-menu .icon-group .menu-icon:active {
+                background: rgba(0,0,0,0.25);
+            }
+
+            .rc-context-menu .icon-group .menu-icon i {
+                position: absolute;
+                top: 8px;
+                left: -1px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .rc-context-menu .icon-group .menu-icon.flex-only {
+                display: none;
+            }
+
+#flex-example:checked ~ .rc-context-menu .flex-only {
+    display: inline-block;
+}
+
+.rc-context-menu .separator {
+    width: 100%;
+    height: 1px;
+    background: rgba(0,0,0,0.17);
+    padding: 0;
+    margin: 8px 0;
+}
+
+.rc-context-menu .label {
+    padding: 2px 16px;
+    display: block;
+    font-size: 15px;
+    color: #424242;
+    cursor: default;
+}
+
+@media (pointer: fine) {
+    .rc-context-menu::-webkit-scrollbar {
+        width: 12px;
+        background: #fff;
+        box-shadow: -1px 0 rgba(0,0,0,0.1);
+    }
+
+    .rc-context-menu::-webkit-scrollbar-corner {
+        background: transparent;
+    }
+
+    .rc-context-menu::-webkit-scrollbar-track {
+        background-clip: padding-box;
+        border: solid transparent;
+        border-width: 0 0 0 4px;
+    }
+
+    .rc-context-menu::-webkit-scrollbar-button {
+        height: 0;
+        width: 0;
+    }
+
+    .rc-context-menu::-webkit-scrollbar-thumb {
+        background-color: rgba(0,0,0,0.2);
+        background-clip: padding-box;
+        border: solid transparent;
+        border-width: 1px 1px 1px 1px;
+        min-height: 28px;
+        padding: 100px 0 0;
+        box-shadow: 1px 1px 0 rgba(0,0,0,0.1) inset, 0 -1px 0 rgba(0,0,0,0.07) inset;
+    }
+
+        .rc-context-menu::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(0,0,0,0.37);
+            box-shadow: 1px 1px 0 rgba(0,0,0,0.21) inset, 0 -1px 0 rgba(0,0,0,0.17) inset;
+        }
+
+        .rc-context-menu::-webkit-scrollbar-thumb:active {
+            background-color: rgba(0,0,0,0.5);
+            box-shadow: 1px 1px 0 rgba(0,0,0,0.41) inset, 0 -1px 0 rgba(0,0,0,0.37) inset;
+        }
+}
+/*********************************************/
+
+/****************Md TextBox*******************/
+
+.md-textbox {
+    position: relative;
+    margin-top: 25px;
+    /* LABEL ======================================= */
+    /* active state */
+    /* BOTTOM BARS ================================= */
+    /* active state */
+    /* HIGHLIGHTER ================================== */
+    /* active state */
+    /* ANIMATIONS ================ */
+    display: block;
+}
+
+    .md-textbox input {
+        font-size: 18px;
+        padding: 10px 10px 10px 5px;
+        display: block;
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid #757575;
+        color:transparent;
+    }
+
+        .md-textbox input:focus {
+            outline: none;
+            color:black;
+        }
+
+        .md-textbox input:valid {
+            color: black;
+        }
+    .md-textbox .mdlabel {
+        color: #999;
+        font-size: 18px;
+        font-weight: normal;
+        position: absolute;
+        pointer-events: none;
+        left: 5px;
+        top: 10px;
+        transition: 0.2s ease all;
+        -moz-transition: 0.2s ease all;
+        -webkit-transition: 0.2s ease all;
+    }
+
+    .md-textbox input:focus ~ .mdlabel, .md-textbox input:valid ~ .mdlabel {
+        top: -20px;
+        font-size: 14px;
+        color: #5264AE;
+    }
+
+    .md-textbox .bar {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+        .md-textbox .bar:before, .md-textbox .bar:after {
+            content: "";
+            height: 2px;
+            width: 0;
+            bottom: 1px;
+            position: absolute;
+            background: #5264AE;
+            transition: 0.2s ease all;
+            -moz-transition: 0.2s ease all;
+            -webkit-transition: 0.2s ease all;
+        }
+
+        .md-textbox .bar:before {
+            left: 50%;
+        }
+
+        .md-textbox .bar:after {
+            right: 50%;
+        }
+
+    .md-textbox input:focus ~ .bar:before, .md-textbox input:focus ~ .bar:after {
+        width: 50%;
+    }
+
+    .md-textbox .highlight {
+        position: absolute;
+        height: 60%;
+        width: 100px;
+        top: 25%;
+        left: 0;
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
+    .md-textbox input:focus ~ .highlight {
+        -webkit-animation: inputHighlighter 0.3s ease;
+        -moz-animation: inputHighlighter 0.3s ease;
+        animation: inputHighlighter 0.3s ease;
+    }
+
+@-webkit-keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@-moz-keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+/*********************************************/

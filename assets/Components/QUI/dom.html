@@ -1,0 +1,79 @@
+﻿<templates>
+    <template name="qui-app">
+        <app>
+            <div db-template="qui-navbar"></div>
+            <div class="cd-main-content" db-name="body">
+                <div db-name="sideMenu"></div>
+                <div class="app-conetnt" db-name="pageContent"></div>
+            </div>
+            <div class="cd-cover-layer" db-name="coverLayer"></div>
+        </app>
+    </template>
+    <template name="suggestion-item">
+        <li>
+            <a class="image-wrapper" href="#0"><img src="./../../assets/placeholder.png" alt="News image"></a>
+            <h4><a class="cd-nowrap" href="#0">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a></h4>
+            <time datetime="2016-01-12">Feb 03, 2016</time>
+        </li>
+    </template>
+    <template name="qui-navbar">
+        <header class="cd-main-header animate-search" db-name="mainHeader">
+            <div class="cd-logo"><a href="#0"><img src="./../../assets/cd-logo.svg" alt="Logo"></a></div>
+            <div db-bind="Pages" db-control="adapter" db-name="navigationWrapper">
+                <nav class="cd-main-nav-wrapper">
+                    <a href="#search" class="cd-search-trigger cd-text-replace" db-name="searchTrigger">Search</a>
+                    <ul class="cd-main-nav" db-name="navigation" db-content>
+                        <template>
+                            <li><a href="#0" db-job="label" db-bind="Name" db-twoway="true">Page Title</a></li>
+                        </template>
+                    </ul>
+                </nav>
+            </div>
+            <div id="search" class="cd-main-search" db-name="searchForm">
+                <div class="cd-form">
+                    <input type="search" db-name="txt_search" placeholder="Search...">
+                    <div class="cd-select">
+                        <span>in</span>
+                        <select name="select-category">
+                            <option value="all-categories">all Categories</option>
+                            <option value="category1">Category 1</option>
+                            <option value="category2">Category 2</option>
+                            <option value="category3">Category 3</option>
+                        </select>
+                        <span class="selected-value">all Categories</span>
+                    </div>
+                </div>
+                <div db-control="adapter" db-bind="Suggestions" db-name="cnt_suggestions">
+                    <div class="cd-search-suggestions" >
+                        <a class="news">
+                            <h3>News</h3>
+                            <ul db-content>
+                                <template>
+                                    <li>
+                                        <a class="image-wrapper" href="#0"><img src="./../../assets/placeholder.png" alt="News image"></a>
+                                        <h4><a class="cd-nowrap" href="#0" db-bind="Title" db-job="label" db-twoway="false"></a></h4>
+                                        <time datetime="2016-01-12">Feb 03, 2016</time>
+                                    </li>
+                                </template>
+                            </ul>
+                        </a>
+                        <!-- .news -->
+
+                        <div class="quick-links">
+                            <h3>Quick Links</h3>
+                            <ul>
+                                <li><a href="#0">Find a store</a></li>
+                                <li><a href="#0">Accessories</a></li>
+                                <li><a href="#0">Warranty info</a></li>
+                                <li><a href="#0">Support</a></li>
+                                <li><a href="#0">Contact us</a></li>
+                            </ul>
+                        </div> <!-- .quick-links -->
+                    </div> <!-- .cd-search-suggestions -->
+                </div>
+                <a href="#0" class="close cd-text-replace" db-name="closeSuggetions">Close Form</a>
+            </div>
+            <a href="#0" style="height:100%" class="cd-nav-trigger cd-text-replace" db-name="navigationTrigger"><span></span>            </a>
+        </header>
+    </template>
+</templates>

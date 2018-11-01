@@ -1,0 +1,19 @@
+{
+  "name": "infinitejs",
+  "version": "1.0.0",
+  "description": "InfiniteJS Framework ",
+  "main": "core.ts",
+  "bin": {
+    "infinitejs": "InfiniteJs.min.js"
+  },
+  "keywords": [
+    "framework",
+    "angularjs",
+    "vuejs",
+    "aurelia"
+  ],
+  "author": "Achour Brahim",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}
