@@ -1,0 +1,45 @@
+﻿<templates>
+    <!--<require module="../sys/ui"></require>-->
+    <require module="../../sys/Corelib"></require>
+    <descriptor type="Ids.t1" name="test">
+        <template name="row">
+            <li>
+                <div db-job="tostring"></div>
+            </li>
+        </template>
+    </descriptor>
+
+    <descriptor type="TemplateTypes.RichMenu" name="menu" db-todo="this.">
+        <template name="simple">
+            <label db-job="tostring"></label>
+        </template>
+    </descriptor>
+    <descriptor type="bind.DObject" name="templates">
+        <template name="contextmenu">
+            <div class="panel panel-default" style="position:fixed;min-width:250px">
+                <div class="panel-body">
+                    <table class="fitWidth">
+                        <thead>
+                            <tr>
+                                <th colspan="2" style="text-align:center;align-self:center" db-bind="Title" db-job="label">
+                                    Header
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody db-content db-bind="Items">
+                            <template>
+                                <tr style="cursor:pointer;">
+                                    <td>
+                                        <span db-job="label" db-bind="Title" db-twoway="1">Title</span>
+                                        <span db-job="label" db-bind="Shortcut" db-twoway="1" class="pull-right">CTRL+A</span>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </template>
+
+    </descriptor>
+</templates>

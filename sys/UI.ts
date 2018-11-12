@@ -6,11 +6,10 @@ import { defs } from './defs';
 import { Controller } from './System';
 import { filters } from './Filters';
 import { context, NameOf } from 'context';
-import * as tmplates from 'template|../assets/templates/UITemplates.html';
+//import * as ui_tmplates from 'template|../assets/templates/UITemplates.html';
 import { Parser } from './Syntaxer';
-
 export declare type conv2template = mvc.ITemplate | string | Function | UI.Template | HTMLElement;
-declare var stop: () => void;
+
 declare var _this;
 declare var $: any;
 declare type JQuery = { show(); hide(); };
@@ -35,7 +34,6 @@ export module UI {
     }
 
     class DragableElement implements EventListenerObject {
-
         pos1 = 0; pos2 = 0; pos3 = 0; pos4 = 0;
         private closeDragElementHandler = {
             handleEvent(e) {
@@ -95,7 +93,7 @@ export module UI {
         private _keyA: KeyboardEvent; private _keyB: KeyboardEvent;
         private handlers: { [s: string]: IKeyA } = {};
 
-        sort(ar: IKeyCombinerTarget[]) {
+        sort(ar: IKeyCombinerTarget[]):undefined {
             function depth(el: Node) {
                 var i = 0;
                 while (el) {
@@ -121,6 +119,7 @@ export module UI {
                 var x: number;
                 return v1.contains(v2) ? 1 : v2.contains(v1) ? -1 : x = (depth(v2) - depth(v1)) > 0 ? 1 : x < 0 ? -1 : order(v1, v2);
             });
+            return void 0;
         }
         sort1(ar: Node[]) {
             function depth(el: Node) {
@@ -832,7 +831,7 @@ export module UI {
 
     }
 
-    var authApp: defs.UI.IAuthApp;
+    var authApp: defs.$UI.IAuthApp;
 
     var isLogged = function (v) { _dsk.AuthStatChanged(v); }
 
@@ -852,7 +851,7 @@ export module UI {
         isReq: number;
         public KeyCombiner: keyCominerEvent = new DesktopKeyboardManager(this);
 
-        public CurrentApp: defs.UI.IApp;
+        public CurrentApp: defs.$UI.IApp;
         static ctor() {
             this.DPCurrentApp = bind.DObject.CreateField<App, Desktop>('CurrentApp', Object, null, (e) => {
                 e.__this.selectApp(e._old, e._new);
@@ -886,7 +885,7 @@ export module UI {
         }
 
 
-        private apps: collection.List<defs.UI.IApp> = new collection.List<defs.UI.IApp>(Object);
+        private apps: collection.List<defs.$UI.IApp> = new collection.List<defs.$UI.IApp>(Object);
 
         public IsSingleton = true;
 
@@ -1068,10 +1067,10 @@ export module UI {
                 }
         }
         public static get Current() { return _dsk; }
-        Check(v: defs.UI.IApp) {
+        Check(v: defs.$UI.IApp) {
             return v instanceof Object;
         }
-        Show(app: defs.UI.IApp) {
+        Show(app: defs.$UI.IApp) {
             if (authApp)
                 authApp.IsLogged((v, app) => {
                     var currentApp = this.CurrentApp;
@@ -1082,7 +1081,7 @@ export module UI {
                         app = this.AuthenticationApp;
                     }
                     else {
-                        app = app && app.IsAuthentication ? (app as defs.UI.IAuthApp).RedirectApp : app;
+                        app = app && app.IsAuthentication ? (app as defs.$UI.IAuthApp).RedirectApp : app;
                     }
                     if (!app)
                         for (var i = 0; i < this.apps.Count; i++) {
@@ -1100,20 +1099,20 @@ export module UI {
         private loadApp = thread.Dispatcher.cretaeJob((app: App) => {
             this.CurrentApp = app;
         }, [null], this, !true);
-        Add(i: defs.UI.IApp) {
+        Add(i: defs.$UI.IApp) {
             if (i.IsAuthentication) this.AuthenticationApp = i as any;
             else this.Register(i);
             return this;
         }
 
-        Register(app: defs.UI.IApp) {
+        Register(app: defs.$UI.IApp) {
             if (this.apps.IndexOf(app) !== -1) return;
             this.apps.Add(app);
             app.Parent = this;
         }
 
-        public get AuthenticationApp(): defs.UI.IAuthApp { return authApp; }
-        public set AuthenticationApp(v: defs.UI.IAuthApp) {
+        public get AuthenticationApp(): defs.$UI.IAuthApp { return authApp; }
+        public set AuthenticationApp(v: defs.$UI.IAuthApp) {
             if (authApp || v == null) throw '';
             authApp = v;
             v.OnStatStatChanged.On = (auth, v) => {
@@ -1126,7 +1125,7 @@ export module UI {
             //authApp.OnLogged = { Owner: this, Invoke: this.Redirect };
 
         }
-        private Redirect(app: defs.UI.IAuthApp) {
+        private Redirect(app: defs.$UI.IAuthApp) {
             this.Show(app.RedirectApp);
         }
         OnUsernameChanged(job, e) {
@@ -1479,7 +1478,7 @@ export module UI {
     }
 
     export class ServiceNavBar<T extends IItem> extends JControl {
-        constructor(public App: defs.UI.IApp, private autoInitializePanels: boolean) {
+        constructor(public App: defs.$UI.IApp, private autoInitializePanels: boolean) {
             super(document.createElement('div'));
             this.OnClick = this.OnClick.bind(this);
             this.serviceNotified = this.serviceNotified.bind(this);
@@ -2309,7 +2308,7 @@ export module UI {
         }
     }
 
-    export class Page extends Control<JControl> implements defs.UI.IPage, basic.IDisposable, IService, IItem {
+    export class Page extends Control<JControl> implements defs.$UI.IPage, basic.IDisposable, IService, IItem {
         Tag;
         Callback(args: any) {
         }
@@ -2759,10 +2758,10 @@ export module UI {
     }
 
     let intern = false;
-    let _app: defs.UI.IApp = null;
+    let _app: defs.$UI.IApp = null;
     var Empty = new collection.List<any>(String);
     Empty.Freeze();
-    export abstract class Layout<T extends defs.UI.IPage> extends Control<T> implements defs.UI.IApp {
+    export abstract class Layout<T extends defs.$UI.IPage> extends Control<T> implements defs.$UI.IApp {
         get IsAuthentication(): boolean { return false; }
         protected OnPageChanging(e: bind.EventArgs<T, this>) { }
         protected OnPageChanged(e: bind.EventArgs<T, this>) {
@@ -2771,7 +2770,7 @@ export module UI {
             page && page.OnSelected.Invoke(page, [page]);
         }
 
-        public static DPSelectedPage = bind.DObject.CreateField<defs.UI.IPage, Layout<any>>("SelectedPage", Object, null, (e) => e.__this.OnPageChanged(e), e => e.__this.OnPageChanging(e));
+        public static DPSelectedPage = bind.DObject.CreateField<defs.$UI.IPage, Layout<any>>("SelectedPage", Object, null, (e) => e.__this.OnPageChanged(e), e => e.__this.OnPageChanging(e));
 
         public static DPCurrentModal: bind.DProperty<Modal, Layout<any>>;
         public CurrentModal: Modal;
@@ -2977,7 +2976,7 @@ export module UI {
             this.set(App.DPBadge, v);
         }
         private static Apps: collection.List<App> = new collection.List<App>(App);
-        public static get CurrentApp(): defs.UI.IApp { return _app; }
+        public static get CurrentApp(): defs.$UI.IApp { return _app; }
         public get Name(): string { return this.name; }
         public Head: Head<Page>;
         private AppBody: DivControl;
@@ -3148,7 +3147,7 @@ export module UI {
         static __fields__() { return [this.DPTitle, this.DPBadge] as any; }
     }
 
-    export abstract class AuthApp extends App implements defs.UI.IAuthApp {
+    export abstract class AuthApp extends App implements defs.$UI.IAuthApp {
         public get IsAuthentication() { return true; }
         constructor(key, b: bind.EventListener<(v: boolean) => void>) {
             super('Authentication');
@@ -3157,7 +3156,7 @@ export module UI {
             this.OnStatStatChanged = new bind.EventListener<(auth: this, isLogged: boolean) => void>(key);
         }
         public abstract IsLogged<T>(callback: (v: boolean, param: T) => void, param: T);
-        public abstract RedirectApp: defs.UI.IApp;
+        public abstract RedirectApp: defs.$UI.IApp;
         public OnStatStatChanged: bind.EventListener<(auth: this, isLogged: boolean) => void>;
     }
 
@@ -3335,7 +3334,7 @@ export module UI {
                 });
             }
         }
-        public targetApp: defs.UI.IApp;
+        public targetApp: defs.$UI.IApp;
         protected silentClose() {
             (this.targetApp || Desktop.Current.CurrentApp).CloseModal(this);
         }
@@ -4398,6 +4397,7 @@ export module UI {
         public abstract get Controller(): bind.Controller;
 
     }
+    declare var stop: () => void;
     export class ScopicTemplateShadow extends TemplateShadow {
         public get Controller(): bind.Controller { return this.cnt; }
         private cnt: bind.Controller;
@@ -4754,7 +4754,7 @@ export module UI {
             this._content.Parent = this;
         }
         private static getFirstChild(dom: DocumentFragment) {
-            var f = dom.firstChild;
+            var f:Node = dom.firstChild as any;
             var node: Node;
             while (f) {
                 if (f instanceof Element) return f;
@@ -7001,7 +7001,7 @@ module init {
         apply();
     }
     thread.Dispatcher.OnIdle(null, apply);
-    ValidateImport(tmplates);
+    //ValidateImport(ui_tmplates);
 
     export function loadCss(callback?, onerror?) {
         var csses = ["../assets/style/bundle.css"
@@ -7014,10 +7014,3 @@ module init {
     //requestAnimationFrame(animation);
 }
 export var LoadDefaultCSS = (callback?, onerror?) => { init.loadCss(callback, onerror); }
-
-export namespace template {
-    
-    
-}
-
-UI.JControl

@@ -12,5 +12,4 @@ export function AsAPI(apiName: string, __prototype__?: (trigger: Api.IApiTrigger
             DoApiCallback: target,
         });
     };
-    
 }

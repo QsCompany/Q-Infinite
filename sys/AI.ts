@@ -1,10 +1,6 @@
-﻿import { value } from 'json|../assets/Data/Primes.json';
-import { collection, bind } from './corelib';
-import { sdata } from './System';
-import { UI } from './UI';
-
-var $math = Math;
+﻿
 export namespace AI {
+    var $math = Math;
     export namespace tools {
         var INFINITY = 1 / 0;
         var argsTag = '[object Arguments]';
@@ -62,7 +58,6 @@ export namespace AI {
         }
         export class Iterator {
             private runner: SegmentRunner = new SegmentRunner(0, 1999);
-            private array = new Array(2000);
             public Read(): number {
                 return this.runner.Next();
             }
@@ -169,12 +164,6 @@ export namespace AI {
             return tools.flattenDeep<T>(str.split(' ').map(letterPairs));
         }
 
-        function isEdgeCaseWithOneOrZeroChars(str1, str2) {
-            if (str1.length == str2.length && str1.length == 1) {
-                return true;
-            }
-            return false;
-        }
 
         function calculateResultIfIdentical(str1, str2) {
             if (str1.toUpperCase() == str2.toUpperCase()) {
@@ -211,7 +200,7 @@ export namespace AI {
     }
     export namespace Math {
         export class GCDExtended {
-            public GCD:number;
+            public GCD: number;
             public FactorA: number;
             public FactorB: number;
             public constructor(gcd: number, factorA: number, factorB: number) {
@@ -253,14 +242,15 @@ export namespace AI {
             }
             return result;
         }
-        var primes = value as number[];
+
+        var primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607, 613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701, 709, 719, 727, 733, 739, 743, 751, 757, 761, 769, 773, 787, 797, 809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911, 919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997, 1009, 1013, 1019, 1021, 1031, 1033, 1039, 1049, 1051, 1061, 1063, 1069, 1087, 1091, 1093, 1097, 1103, 1109, 1117, 1123, 1129, 1151, 1153, 1163, 1171, 1181, 1187, 1193, 1201, 1213, 1217, 1223, 1229, 1231, 1237, 1249, 1259, 1277, 1279, 1283, 1289, 1291, 1297, 1301, 1303, 1307, 1319, 1321, 1327, 1361, 1367, 1373, 1381, 1399, 1409, 1423, 1427, 1429, 1433, 1439, 1447, 1451, 1453, 1459, 1471, 1481, 1483, 1487, 1489, 1493, 1499, 1511, 1523, 1531, 1543, 1549, 1553, 1559, 1567, 1571, 1579, 1583, 1597, 1601, 1607, 1609, 1613, 1619, 1621, 1627, 1637, 1657, 1663, 1667, 1669, 1693, 1697, 1699, 1709, 1721, 1723, 1733, 1741, 1747, 1753, 1759, 1777, 1783, 1787, 1789, 1801, 1811, 1823, 1831, 1847, 1861, 1867, 1871, 1873, 1877, 1879, 1889, 1901, 1907, 1913, 1931, 1933, 1949, 1951, 1973, 1979, 1987, 1993, 1997, 1999, 2003, 2011, 2017, 2027, 2029, 2039, 2053, 2063, 2069, 2081, 2083, 2087, 2089, 2099, 2111, 2113, 2129, 2131, 2137, 2141, 2143, 2153, 2161, 2179, 2203, 2207, 2213, 2221, 2237, 2239, 2243, 2251, 2267, 2269, 2273, 2281, 2287, 2293, 2297, 2309, 2311, 2333, 2339, 2341, 2347, 2351, 2357, 2371, 2377, 2381, 2383, 2389, 2393, 2399, 2411, 2417, 2423, 2437, 2441, 2447, 2459, 2467, 2473, 2477, 2503, 2521, 2531, 2539, 2543, 2549, 2551, 2557, 2579, 2591, 2593, 2609, 2617, 2621, 2633, 2647, 2657, 2659, 2663, 2671, 2677, 2683, 2687, 2689, 2693, 2699, 2707, 2711, 2713, 2719, 2729, 2731, 2741, 2749, 2753, 2767, 2777, 2789, 2791, 2797, 2801, 2803, 2819, 2833, 2837, 2843, 2851, 2857, 2861, 2879, 2887, 2897, 2903, 2909, 2917, 2927, 2939, 2953, 2957, 2963, 2969, 2971, 2999, 3001, 3011, 3019, 3023, 3037, 3041, 3049, 3061, 3067, 3079, 3083, 3089, 3109, 3119, 3121, 3137, 3163, 3167, 3169, 3181, 3187, 3191, 3203, 3209, 3217, 3221, 3229, 3251, 3253, 3257, 3259, 3271, 3299, 3301, 3307, 3313, 3319, 3323, 3329, 3331, 3343, 3347, 3359, 3361, 3371, 3373, 3389, 3391, 3407, 3413, 3433, 3449, 3457, 3461, 3463, 3467, 3469, 3491, 3499, 3511, 3517, 3527, 3529, 3533, 3539, 3541, 3547, 3557, 3559, 3571, 3581, 3583, 3593, 3607, 3613, 3617, 3623, 3631, 3637, 3643, 3659, 3671, 3673, 3677, 3691, 3697, 3701, 3709, 3719, 3727, 3733, 3739, 3761, 3767, 3769, 3779, 3793, 3797, 3803, 3821, 3823, 3833, 3847, 3851, 3853, 3863, 3877, 3881, 3889, 3907, 3911, 3917, 3919, 3923, 3929, 3931, 3943, 3947, 3967, 3989, 4001];
         export function getRandomPrime(cond: (p) => boolean, maxIndex?: number) {
             var time = performance.now();
             maxIndex || (maxIndex = primes.length - 1);
             do {
 
                 if (performance.now() - time > 5000) throw null;
-                var p = primes[$math.floor($math.random() * maxIndex)];
+                var p = primes[($math as any).floor(($math as any).random() * maxIndex)];
             }
             while (!cond(p))
             return p;
@@ -310,7 +300,7 @@ export namespace AI {
         export function gcd_extended(p: number, q: number): GCDExtended {
             if (q == 0) return new GCDExtended(p, 1, 0);
             var vals = gcd_extended(q, (p as any).mod(q));
-            var b = vals.FactorA - vals.FactorB * $math.floor(p / q);
+            var b = vals.FactorA - vals.FactorB * ($math as any).floor(p / q);
             return vals.SetValues(vals.GCD, vals.FactorB, b);
         }
 
@@ -324,7 +314,7 @@ export namespace AI {
         /** Returns array of solutions to congruence equation
            factor*x = rem (mod modulus). Solutions are sorted */
         export function SolveCongurentEqu(factor: number, rem: number, modulus: number) {
-            var m = $math.abs(modulus);
+            var m = ($math as any).abs(modulus);
             var a = (factor as any).mod(m);
             var b = (rem as any).mod(m);
             var result_extended = gcd_extended(a, m);
@@ -401,7 +391,7 @@ export namespace AI {
                 Encrypter: new RSA({ n: n, e: e })
             };
         }
-        
+
         export function test(f: Function, iter = 1e4, args: any[]) {
             var deb = performance.now();
             var i = iter;
@@ -411,218 +401,3 @@ export namespace AI {
         }
     }
 }
-
-export namespace DataBindingQuee {
-
-    interface IQueeElment {
-        owner?: any;
-        invoke();
-    }
-
-    var quee: IQueeElment[];
-    var isexec: boolean = false;
-
-    export function Exec(owner) {
-        bind.DObject
-    }
-}
-
-
-/*
- * 
- * 
- *
-interface colReader {
-    v: string;
-    i: number;
-    e: boolean;
-}
-
-interface colReader1 {
-    value: string;//value
-    cursor: charReader;//charCursor
-    EOF: boolean;//EOF
-}
-
-interface charReader {
-    cursor: number;//index;
-    value: string;//char;
-    len?: number;//charLength;
-    newLine?: boolean;//newLine;
-    eof?: boolean;//eof
-}
- export class CSV {
-    static separator = ';';
-    static emptyArray: string[] = Object.freeze([] as string[]) as any;
-    private lines: string[];
-    public Columns = new collection.Dictionary<string, number>("");
-
-    public static ReadAllLines(s: string): string[] {
-        var t: string[] = [];
-        var pi = 0;
-        var inq = false;
-        for (var i = 0; i < s.length; i++) {
-            var c = s[i];
-            if (c == '\\') { i++; continue; }
-            if (c == '"' && s[i - 1] !== '\\') inq = !inq;
-            if (inq) continue;
-            if (c == '\r') {
-                t.push(s.substr(pi, i - pi));
-                if (s[i + 1] == '\n')
-                    i++;
-                pi = i + 1;
-            }
-        }
-        return t;
-    }
-
-    private parse(pind: number, s: string) {
-
-    }
-    private static nextChar(s: string, pchar: charReader): charReader {
-        if (!pchar) pchar = { cursor: 0, value: void 0 };
-        else if (pchar.eof) return pchar;
-        var start: number = pchar.cursor;
-        var i = start;
-        var lc: string;
-        while (i < s.length) {
-            lc = c;
-            var c = s[i++];
-            if (c === this.separator)
-                return { value: c, cursor: i };
-            if (c === '"') {
-                if (lc !== '\\')
-                    return { value: '"', cursor: i - 1 };
-            }
-            else if (c === '\r') {
-                var hasn = s[i] === '\n';
-                if (hasn) i++;
-                return { value: hasn ? '\r\n' : c, cursor: i, newLine: true, len: hasn ? 2 : 1 };
-            }
-        }
-        return { value: void 0, cursor: s.length, eof: true };
-    }
-    private static readString1(s: string, stat: charReader):charReader {
-        var start = stat.cursor;
-        var i = start;
-        var lc = s[i];
-        if (lc !== '"') return null;
-
-        while (++i < s.length) {
-            if (s[i] == '"' && lc !== '\\')
-                return { value: s.substring(stat.cursor, i + 1), cursor: i + 1, eof: i == s.length - 1 };
-            else
-                lc = s[i];
-        }
-        return { value: s.substring(start), cursor: s.length, eof: true };
-    }
-
-    private static readColumn1(s: string, stat: colReader1): colReader1 {
-        if (!stat) stat = { EOF: false, cursor: { cursor: 0, value: void 0 }, value: void 0 };
-        else if (stat.EOF) return void 0;
-        var i = stat.cursor;
-        while (true) {
-            var nchar = this.nextChar(s, i);
-            if (nchar.value === this.separator)
-                return { value: s.substring(stat.cursor.cursor, nchar.cursor - 1), EOF: false, cursor: nchar };
-            else if (nchar.eof) {
-                return { value: s.substr(stat.cursor.cursor), EOF: true, cursor: nchar };
-            }
-            else if (nchar.newLine)
-                return { value: s.substring(stat.cursor.cursor, nchar.cursor - nchar.len), EOF: false, cursor: nchar };
-            else if (nchar.value === '"') {
-                var t = this.readString1(s, nchar);
-                i = t;
-            }
-        }
-        return { value: s.substr(stat.cursor.cursor), cursor: nchar, EOF: true };
-    }
-
-    private static readString(s: string, start: number) {
-        var i = start;
-        var lc = s[i];
-        if (lc !== '"') return null;
-
-        while (++i < s.length) {
-            if (s[i] == '"' && lc !== '\\')
-                return { str: s.substring(start, i + 1), i: i, eof: i == s.length - 1 };
-            else
-                lc = s[i];
-        }
-        return { str: s.substring(start), i: s.length - 1, eof: true };
-    }
-
-    private static readColumn(s: string, stat: colReader): colReader {
-        if (!stat) stat = { e: false, i: 0, v: void 0 };
-        if (stat.e) return void 0;
-        var i = stat.i;
-        while (i < s.length) {
-            var is = s.indexOf(this.separator, i);
-            var ia = s.indexOf('"', i);
-            if (is == -1 && ia == -1) break;
-            if (is === -1) is = s.length;
-            if (ia === -1) ia = s.length;
-            if (is < ia) return { v: s.substring(stat.i, is), i: is + 1, e: false };
-            var t = this.readString(s, ia);
-            i = t.i + 1;
-        }
-        return { v: s.substr(stat.i), i: s.length, e: true };
-    }
-
-    private static split1(s: string): string[] {
-        var cls: string[] = [];
-        var p: colReader;
-        while (p = this.readColumn(s, p))
-            cls.push(p.v);
-        return cls;
-    }
-
-    static split(s: string, l?: number): string[] {
-        if (typeof l !== 'number') return this.split1(s);
-        var cls: string[] = new Array<string>(l);
-        var p: colReader;
-        var i = 0;
-        while (p = this.readColumn(s, p))
-            cls[i++] = p.v;
-        return cls;
-    }
-
-    public constructor(file: string, private async: boolean) {
-        this.lines = CSV.ReadAllLines(file);
-        var cols = CSV.split(this.lines[0]);
-        var l = cols.length;
-        this.Columns.Clear();
-        for (var i = 0; i < l; i++)
-            this.Columns.Set(cols[i], i);
-        this.Columns.Freeze();
-        this.lines.splice(0, 1);
-    }
-    public get Count() { return this.lines.length; }
-    GetRow(row: number): string[] {
-        return CSV.split(this.lines[row], this.Columns.Count);
-    }
-    public Get(row: number, col: string | number) {
-        return CSV.split(this.lines[row], this.Columns.Count)[typeof col === 'string' ? this.Columns.Get(col) : col];
-    }
-    public ColumnName(index: number): string {
-        return this.Columns.GetKeyOf(index) || "";
-    }
-    public ColumnIndex( name:string) { return this.Columns.Get(name); }
-    private _index = -1;
-    private _current: string[] = void 0;
-    public get Index() { return this._index; }
-    public Reset() { this._index = -1; return this; }
-    public Next() {
-        ++this._index;
-        var b = this.Index < this.lines.length;
-        this._current = b ? CSV.split(this.lines[this._index]) : CSV.emptyArray;
-        return b;
-    }
-    public get Current(): string[] { return this._current; }
-    public Field(name_index: string | number) {
-        var c = this.Current;
-        return c ? this.Current[typeof name_index === 'string' ? this.Columns.Get(name_index) : name_index] : null;
-    }
-}
-  
- */

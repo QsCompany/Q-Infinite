@@ -1,27 +1,28 @@
-﻿import {net, Common, bind, basic, collection, utils, encoding,Api} from './Corelib';
-import {context} from 'context';
-import {Controller} from './System';
-import {UI} from './UI';
+﻿import { net, Common, bind, basic, collection, utils, encoding, Api } from './Corelib';
+import { context } from 'context';
+import { Controller } from './System';
+import { UI } from './UI';
 import { models } from './QModel';
 
 
-var requester: Controller.ProxyData;
 
 
-namespace services {
-    export class AlertMessage implements Controller.IService {
-        Name= 'alert';
+export namespace services {
+    var requester: Controller.ProxyData;
+
+    class AlertMessage implements Controller.IService {
+        Name = 'alert';
         OnResponse(proxy: Controller.ProxyCallback<any>, webr: net.QueeDownloader, json: Controller.IServiceResponse) {
-            UI.Modal.ShowDialog(json.sdata.Title, json.sdata.Content, null, 'OK',null);
+            UI.Modal.ShowDialog(json.sdata.Title, json.sdata.Content, null, 'OK', null);
         }
     }
 
-    export class ConfirmMessage implements Controller.IService {
-        Name= 'confirm';
+    class ConfirmMessage implements Controller.IService {
+        Name = 'confirm';
 
         OnResponse(proxy: Controller.ProxyCallback<any>, webr: net.QueeDownloader, json: Controller.IServiceResponse) {
             const c = new encoding.SerializationContext(true);
-            const e = c.FromJson(json.sdata, models.Message,null) as models.Message;
+            const e = c.FromJson(json.sdata, models.Message, null) as models.Message;
             c.Dispose();
             switch (e.Type) {
                 case 0:
@@ -30,12 +31,12 @@ namespace services {
                         proxy.callBack(proxy, json, undefined);
                     return;
                 case 2:
-                case 3: 
+                case 3:
                     e.Callback = {
                         ProxyCallback: proxy,
                         Request: webr.current,
                         QueeDownloader: webr,
-                    }; 
+                    };
 
                     var elm = document.createElement('div'); elm.innerHTML = e.Content;
                     var t = new UI.TControl(elm, e.Data);
@@ -44,7 +45,7 @@ namespace services {
             }
         }
 
-        public OnMessageClosed(xx:UI.MessageEventArgs,e:models.Message) {
+        public OnMessageClosed(xx: UI.MessageEventArgs, e: models.Message) {
             e.Action = UI.MessageResult[xx.Result].toLowerCase();
             requester.Post(models.Message, e, null, (s, r, iss, req) => {
                 if (iss) {
@@ -55,7 +56,7 @@ namespace services {
             });
         }
     }
-    export class SpeechMessage implements Controller.IService {
+    class SpeechMessage implements Controller.IService {
         Name = 'speech';
 
         OnResponse(proxy: Controller.ProxyCallback<any>, webr: net.QueeDownloader, json: Controller.IServiceResponse) {
@@ -92,14 +93,14 @@ namespace services {
             });
         }
     }
-    export class InfoNotification implements Controller.IService {
-        Name= 'notification';
+    class InfoNotification implements Controller.IService {
+        Name = 'notification';
 
         OnResponse(proxy: Controller.ProxyCallback<any>, webr: net.QueeDownloader, json: Controller.IServiceResponse) {
             UI.InfoArea.push(json.sdata.Content, json.sdata.IsInfo, json.sdata.Expire);
         }
     }
-    export class notfication implements Controller.IService {
+    class notfication implements Controller.IService {
         Name = 'notfication';
         OnResponse(proxy: Controller.ProxyCallback<any>, webr: net.QueeDownloader, json: Controller.IServiceResponse) {
             var x = document.location.origin;
@@ -112,26 +113,24 @@ namespace services {
         }
     }
 
+    export function LoadServices(_requester: Controller.ProxyData) {
+        requester = _requester;
+        Controller.Register(new AlertMessage());
+        Controller.Register(new ConfirmMessage());
+        Controller.Register(new SpeechMessage());
+        Controller.Register(new InfoNotification());
+        Controller.Register(new notfication());
 
-}
-
-export function Load(_requester: Controller.ProxyData) {
-    requester = _requester;
-    Controller.Register(new services.AlertMessage());
-    Controller.Register(new services.ConfirmMessage());
-    Controller.Register(new services.SpeechMessage());
-    Controller.Register(new services.InfoNotification());    
-    Controller.Register(new services.notfication());    
-
-    Controller.Register({
-        Name: 'guid', OnResponse(proxy: Controller.ProxyCallback<any>, webr: net.QueeDownloader, json: Controller.IServiceResponse) {            
-            var d = json.sdata;
-            if (typeof d === 'number') {
-                basic.setGuidRange(d, d + 2000 - 1);
-            } else if (d instanceof Array) {
-                basic.setGuidRange(d[0], d[1]);
-            } else
-                throw "Invalide Exception";
-        }
-    });
+        Controller.Register({
+            Name: 'guid', OnResponse(proxy: Controller.ProxyCallback<any>, webr: net.QueeDownloader, json: Controller.IServiceResponse) {
+                var d = json.sdata;
+                if (typeof d === 'number') {
+                    basic.setGuidRange(d, d + 2000 - 1);
+                } else if (d instanceof Array) {
+                    basic.setGuidRange(d[0], d[1]);
+                } else
+                    throw "Invalide Exception";
+            }
+        });
+    }
 }

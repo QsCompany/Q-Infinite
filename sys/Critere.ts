@@ -1,14 +1,15 @@
 ﻿import { bind, reflection, collection, utils } from "./Corelib";
 import { UI } from "./UI";
 import { sdata } from "./System";
-var Bool = Boolean;
-var __typesDesc = new collection.Dictionary<Function, Critere.CritereMVC>("test");
+
+var $Bool = Boolean;
 export namespace Critere {
 
+    var __typesDesc = new collection.Dictionary<Function, Critere.CritereMVC>("test");
 
-    export abstract class Critere<T> /*extends bind.DObject*/ extends utils.Filter<T, utils.IPatent< T>> implements utils.IPatent < T >{
+    export abstract class Critere<T> /*extends bind.DObject*/ extends utils.Filter<T, utils.IPatent<T>> implements utils.IPatent<T>{
         Check(s: T): boolean {
-            {}
+            { }
             return this.isMatch(s);
         }
 
@@ -35,11 +36,11 @@ export namespace Critere {
         protected _view: UI.JControl;
         protected abstract getView(): UI.JControl;
         public Activate() {
-            this.Scop.setAttribute('activate',  true);
+            this.Scop.setAttribute('activate', true);
             var s = this.Scop.getScop('activate');
         }
         public Disactivate() {
-            this.Scop.setAttribute('activate',  false);
+            this.Scop.setAttribute('activate', false);
         }
 
         public GetMatchs(p: T[]): T[] {
@@ -60,7 +61,7 @@ export namespace Critere {
         public get View() {
             return this._view || (this._view = this.getView());
         }
-        public isMatch(v: T):boolean {
+        public isMatch(v: T): boolean {
             return this._isMatch(v);
         }
         public IsActivated() {
@@ -99,10 +100,10 @@ export namespace Critere {
                     v.clear();
             }
         }
-         
+
         static ctor() {
             this.Register(String, Text, {}, (o, dp, mvc, prm) => new Text((prm && prm.label) || dp.Name));
-            this.Register(Bool, Boolean, {}, (o, dp, mvc, prm) => new Boolean((prm && prm.label) || dp.Name));
+            this.Register($Bool, Boolean, {}, (o, dp, mvc, prm) => new Boolean((prm && prm.label) || dp.Name));
             this.Register(Number, Vector, {}, (o, dp, mvc, prm) => new Vector((prm && prm.label) || dp.Name));
             this.Register(Date, Period, {}, (o, dp, mvc, prm) => new Period((prm && prm.label) || dp.Name));
         }
@@ -148,14 +149,14 @@ export namespace Critere {
         static CheckType(e: bind.EventArgs<any, Unaire<any>>) {
             e.__this.CheckType(e);
         }
-        
-        public static DPValue = bind.DObject.CreateField<any, Unaire<any>>('Value', Object,null,null, Unaire.CheckType);
+
+        public static DPValue = bind.DObject.CreateField<any, Unaire<any>>('Value', Object, null, null, Unaire.CheckType);
         public Value: T;
 
         constructor() {
-            super();  
+            super();
         }
-        
+
         protected abstract CheckType(e: bind.EventArgs<T, Unaire<T>>): void;
     }
 
@@ -209,7 +210,7 @@ export namespace Critere {
             this.set(Unaire.DPValue, v);
         }
         IsQuerable(): boolean {
-            return  (this.Value != null && String(this.Value).trim() !== "");
+            return (this.Value != null && String(this.Value).trim() !== "");
         }
     }
 
@@ -232,9 +233,8 @@ export namespace Critere {
             return sv === v;
         }
 
-        IsQuerable(): boolean
-        {
-            return  this.Value != null;
+        IsQuerable(): boolean {
+            return this.Value != null;
         }
 
         constructor(label: string) {
@@ -243,7 +243,7 @@ export namespace Critere {
         }
     }
 
-    
+
     export class Vector extends Couple<number> {
         protected getView(): UI.JControl {
             return new UI.TControl('templates.crtVector', this.Scop);
@@ -275,7 +275,7 @@ export namespace Critere {
             this.Title = title || "Vector Title";
             this.clear();
         }
-        clear() { this.X = 0; this.Y = 0;}
+        clear() { this.X = 0; this.Y = 0; }
 
         IsQuerable(): boolean {
             return this.X != null || this.Y != null;
@@ -298,9 +298,9 @@ export namespace Critere {
             else e._new = e._old;
         }
 
-        
+
         IsQuerable(): boolean {
-            return  (this.X != null || this.Y != null);
+            return (this.X != null || this.Y != null);
         }
 
         protected _isMatch(v: Date) {
@@ -328,12 +328,12 @@ export namespace Critere {
     export abstract class ComplexCritere<T extends bind.DObject> extends Critere<T> {
         protected static __shema: CritereShema;
         protected get Shema(): Critere.CritereShema { return (this.constructor as any).__shema; }
-        protected static generateFieldsFrom(type: Function, fields?: bind.DProperty<any,any>[]): bind.DProperty<any,any>[] {
+        protected static generateFieldsFrom(type: Function, fields?: bind.DProperty<any, any>[]): bind.DProperty<any, any>[] {
             fields = fields || bind.DObject.getFields(type);
             var _flds: bind.DProperty<any, any>[] = [];
             var _propertiesSheam: PropertyCritereShema[] = [];
 
-            for (var i = 0; i < fields.length; i++) {    
+            for (var i = 0; i < fields.length; i++) {
                 var fld = fields[i];
                 if (!reflection.IsInstanceOf(fld.Type, collection.List)) {
                     var crDP = bind.DObject.CreateField(fld.Name, this.getTypeOf(fld.Type));
@@ -341,7 +341,7 @@ export namespace Critere {
                     _propertiesSheam.push({ critereDP: crDP, propertyDP: fld });
                 }
             }
-            this.__shema= {
+            this.__shema = {
                 critereType: this,
                 proxyType: type,
                 critereProperties: _flds,
@@ -361,7 +361,7 @@ export namespace Critere {
         protected init() {
             this.InitProperties();
         }
-        protected getView(container?:UI.JControl): UI.JControl {
+        protected getView(container?: UI.JControl): UI.JControl {
             var c = container || new UI.DivControl('section');
             var flds = this.Shema.propertiesSheam;
             flds = flds.sort((a, b) => __typesDesc.IndexOf(a.propertyDP.Type as Function));
@@ -421,10 +421,8 @@ export namespace Critere {
     }
     export interface CritereShema {
         proxyType: Function;
-        critereType: Function;        
+        critereType: Function;
         propertiesSheam: PropertyCritereShema[];
         critereProperties: Array<bind.DProperty<any, any>>;
     }
 }
-
-window['Critere'] = Critere;

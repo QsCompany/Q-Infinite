@@ -1,0 +1,24 @@
+﻿<descriptor name="material">
+    <template name="clearTable">
+        <ClearTable>
+            <div class="table-title">
+                <h3>Data Table</h3>
+            </div>
+            <table class="table-fill">
+                <thead>
+                    <tr class="table-fill-th" db-name="_tbl_head">
+                        <!--<th >Month</th>
+                        <th >Sales</th>-->
+                    </tr>
+                </thead>
+                <tbody class="table-hover" db-name="_tbl_rows" db-content>
+                    <template db-name="_templateRoot"><tr>
+                            <!--<td db-bind="name" db-job="label">January</td>
+                            <td >$ 50,000.00</td>-->
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </ClearTable>
+    </template>
+</descriptor>

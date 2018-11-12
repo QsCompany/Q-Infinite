@@ -20,11 +20,11 @@ export module db {
         result?;
         executed?: boolean;
     }
-    export interface ScalCommand extends Command{
+    export interface ScalCommand extends Command {
         cmd: string;
         callback?: (iss: boolean, sender: Database, sqlTrans, result?: SQLResultSet<any>) => void;
     }
-    export interface VectorCommand extends Command{
+    export interface VectorCommand extends Command {
         cmd: string[];
         callback?: (index: number, iss: boolean, sender: Database, sqlTrans, result?: SQLResultSet<any>) => void;
     }
@@ -56,7 +56,7 @@ export module db {
         }
         public IsLoaded: boolean;
         public OnLoad = new bind.FEventListener<(sb: this) => void>(0, true);
-        
+
         private isExecuting: boolean;
         private queue: (ScalCommand | VectorCommand)[] = [];
 
@@ -102,13 +102,13 @@ export module db {
         }
 
         _exeScalSQL(db, cmd: ScalCommand) {
-            db.executeSql(cmd.cmd as string, [], cmd.callback ? (s, r) => { cmd.callback(true, this, s, r); cmd.callback = undefined;} : void 0);
+            db.executeSql(cmd.cmd as string, [], cmd.callback ? (s, r) => { cmd.callback(true, this, s, r); cmd.callback = undefined; } : void 0);
         }
 
         _exeVectorSQL(db, cmd: VectorCommand) {
             var j = -1;
             var _callback = cmd.callback ? (s, r) => {
-                j++;                
+                j++;
                 cmd.callback && cmd.callback(j, true, this, s, r);
                 if (j == commands.length - 1) cmd.callback = undefined;
             } : void 0;
@@ -116,7 +116,7 @@ export module db {
             for (var i = 0; i < commands.length; i++)
                 db.executeSql(commands[i], [], _callback);
         }
-        executes(async: boolean,commands: string[], callback?: (index: number, iss: boolean, sender: this, sqlTrans, result?: SQLResultSet<any>) => void) {
+        executes(async: boolean, commands: string[], callback?: (index: number, iss: boolean, sender: this, sqlTrans, result?: SQLResultSet<any>) => void) {
             this.Push({ async: async, cmd: commands, callback: callback });
             //if (!__SUPPORT_OPENDATABASE__) return;
             //var j = -1;
@@ -178,10 +178,10 @@ export module db {
 
             var tbl: IDBTableInfo = {
                 table: x,
-                info: this._tables__.gettableByName(name,rowType),
+                info: this._tables__.gettableByName(name, rowType),
                 _dbInfo_: this.shemas
             };
-            x.CreateIfNotExist();            
+            x.CreateIfNotExist();
             this._store[name] = tbl;
 
             return this;
@@ -407,10 +407,10 @@ export module db {
             this.database.syncExecute(this.builder.cretaeCmd.apply({}), callback);
         }
 
-        public ExecuteOperation(cm: IOperation,callback?:db.callback<T>) {
+        public ExecuteOperation(cm: IOperation, callback?: db.callback<T>) {
             var cmd = this.getCmd(cm);
             var reExec;
-            this.database.execute(false,cmd, reExec = (iss, sb, sql, rslt: SQLResultSet<T>) => {
+            this.database.execute(false, cmd, reExec = (iss, sb, sql, rslt: SQLResultSet<T>) => {
                 iss = iss && !((cm.op == Operation.Update || cm.op == Operation.UpdateOnly) && rslt.rowsAffected == 0);
                 if (!iss) do {
                     if (cm.op == 2)
@@ -418,15 +418,15 @@ export module db {
                     else if (cm.op == 1)
                         cm = { op: 5, row: cm.row };
                     else break;
-                    return this.database.execute(false,this.getCmd(cm), reExec);
+                    return this.database.execute(false, this.getCmd(cm), reExec);
                 } while (false);
-                if(cm)
-                callback && callback(iss , sb, sql, rslt);
+                if (cm)
+                    callback && callback(iss, sb, sql, rslt);
             });
         }
 
         public getAvaible(exCols?: string | string[], callback?: (iss: boolean, sender: Database, sqlTrans, result?) => void) {
-            this.database.execute(false,this.builder.getAvaibleCmd(exCols), callback);
+            this.database.execute(false, this.builder.getAvaibleCmd(exCols), callback);
         }
 
         public ExecuteOperations(ops: IOperation[], callback: (succ: boolean, nfail: number) => void) {
@@ -444,7 +444,7 @@ export module db {
             });
         }
         static __count = 1;
-         
+
         public ExecuteOperations1(ops: IOperation[], callback: (succ: boolean, nfail: number) => void) {
             var id = DatabaseTable.__count;
             if (ops.length == 0)
@@ -454,15 +454,15 @@ export module db {
             }
             var nsuccess: IOperation[] = [];
             var reExec;
-            this.database.executes(false,ops as any, reExec = (j, iss, sb, sql, rslt: SQLResultSet<T>) => {
+            this.database.executes(false, ops as any, reExec = (j, iss, sb, sql, rslt: SQLResultSet<T>) => {
                 if (!iss)
                     nsuccess.push(ops[j]);
                 if (j == ops.length - 1) return callback && callback(nsuccess.length != 0, nsuccess.length);
             });
 
         }
-        public UpdateTableToDB(tbl: sdata.DataTable<T>|T[], callback: (succ: boolean,nfail:number) => void,full?:boolean) {
-            var tbls = tbl instanceof sdata.DataTable ? tbl.AsList() : tbl;            
+        public UpdateTableToDB(tbl: sdata.DataTable<T> | T[], callback: (succ: boolean, nfail: number) => void, full?: boolean) {
+            var tbls = tbl instanceof sdata.DataTable ? tbl.AsList() : tbl;
             var toInsert = tbls.slice(0);
             var eI = toInsert.map((c) => c.Id);
             var cmds: IOperation[] = [];
@@ -516,7 +516,7 @@ export module db {
                     //    tbl.Add(tbl.CreateNewItem(dbRow.Id).FromJson(dbRow, l));
                     //}
                 } else callback && callback(iss);
-                
+
             });
         }
 
@@ -538,7 +538,7 @@ export module db {
 
         public MakeUpdate(date: Date | number) {
             this.database.MakeUpdate(this.builder.tableName, date);
-            
+
         }
 
         IsExist(callback: (isExist: boolean) => void) {
@@ -561,7 +561,7 @@ export module db {
         }
 
         public Created: boolean;
-        
+
     }
 
 
@@ -572,10 +572,10 @@ export module db {
         }
 
         public static DPTableName = bind.DObject.CreateField<string, _Table__>("TableName", String);
-        public TableName: string; 
+        public TableName: string;
 
         public static DPType = bind.DObject.CreateField<string, _Table__>("Type", String);
-        public Type: string; 
+        public Type: string;
 
         public static DPLastUpdate = bind.DObject.CreateField<number, _Table__>("LastUpdate", Number);
         public LastUpdate: number;
@@ -594,11 +594,11 @@ export module db {
         }
     }
     export class _Tables__ extends sdata.DataTable<_Table__> {
-        
+
         constructor(public database: Database) {
             super(null, _Table__, (id) => { return new _Table__(null); });
         }
-        gettableByName(name: string,type?:Function) {
+        gettableByName(name: string, type?: Function) {
             for (var i = 0; i < this._list.length; i++) {
                 if (this._list[i].TableName == name) return this._list[i];
             }
@@ -657,22 +657,23 @@ export module db {
         insertId: number;
 
     }
+
+
+    //window['test'] = () => {
+    //    var _db = new db.Database();
+    //    _db.initialize();
+    //    var tbl = new db.DatabaseTable(_db, 'Product', models.Product);
+    //    tbl.Create((iss, db, sql, rslt) => {
+    //        if (iss) {
+    //            var vls = window["__data"].Products._list as models.Product[];
+    //            tbl.Insert(vls[2220], (iss, db, sql, rslt) => {
+    //            });
+    //        } else {
+
+    //        }
+    //    });
+    //}
 }
 
 
 
-
-//window['test'] = () => {
-//    var _db = new db.Database();
-//    _db.initialize();
-//    var tbl = new db.DatabaseTable(_db, 'Product', models.Product);
-//    tbl.Create((iss, db, sql, rslt) => {
-//        if (iss) {
-//            var vls = window["__data"].Products._list as models.Product[];
-//            tbl.Insert(vls[2220], (iss, db, sql, rslt) => {
-//            });
-//        } else {
-
-//        }
-//    });
-//}

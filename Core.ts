@@ -16,12 +16,8 @@ export * from "./sys/Facebook";
 export * from "./sys/Initializer";
 export * from "./sys/Services";
 export * from "./sys/Critere";
-export * from "./components/ActionButton/script";
 export * from "./sys/UI";
 export * from "./sys/AI";
+import { Resources } from './sys/resources';
 
-
-//var arr = [];
-//define('req', ['context'], (context) => {
-//    context.OnGStat(ModuleStat.Executed, (me, target, cstat, stat) => { arr.push(target); });
-//});
+ValidateImport(Resources);

@@ -1,7 +1,17 @@
 ﻿import { bind } from "./Corelib";
 
-export enum JSToken
-{
+declare var ui_tmplates;
+declare var comp_templates;
+declare var value;
+declare var plg_template;
+declare var plg_json;
+export namespace Parser {
+
+    interface IJSTokenResult {
+        token: JSToken;
+        value: any;
+    }
+    export enum JSToken {
         None = 0,
         EndOfFile,
 
@@ -165,16 +175,10 @@ export enum JSToken
 
         // Do not use this one
         Limit
-}
-export interface ref<T> {
-    value?: T;
-}
-
-interface IJSTokenResult {
-    token: JSToken;
-    value: any;
-}
-export namespace Parser {
+    }
+    export interface ref<T> {
+        value?: T;
+    }
     export enum TokenType {
         uknown = 0,
         alpha = 1,
@@ -204,15 +208,15 @@ export namespace Parser {
     export enum CToken {
         whitespace,
         undefined,
-        boolean,        
+        boolean,
         number,
-        string,       
+        string,
         word,
-        keyword,        
+        keyword,
         path,
         functionCall,
         arrayCall,
-        
+
     }
     export interface ParserResult {
         start?: Token;
@@ -383,14 +387,14 @@ export namespace Parser {
             else return null;
             return this.Tokens[this.index];
         }
-        
+
         public back() {
             var i = this.index;
             if (this.index > 0) this.index--;
             else return null;
             return this.Tokens[this.index];
         }
-        public shift(): true {            
+        public shift(): true {
             this.index++;
             return true;
         }
@@ -456,13 +460,13 @@ export namespace Parser {
             this.currentNode = prnt;
             return t;
         }
-        fastExec(p: (...args:any[])=>boolean,ths?:any,args?:any[]): boolean {
+        fastExec(p: (...args: any[]) => boolean, ths?: any, args?: any[]): boolean {
             var s = this.save();
             var prnt = this.currentNode;
             try {
                 if (!this.current) return false;
                 var t = p.apply(ths || this, args) as boolean;
-                if (t) 
+                if (t)
                     return true;
                 else this.restore(s);
             } catch (e) {
@@ -488,7 +492,7 @@ export namespace Parser {
             return c ? c.char : '';
         }
 
-        get(shift:number) {
+        get(shift: number) {
             var c = this.Tokens[this.index + shift];
             return c && c.char;
         }
@@ -596,7 +600,7 @@ export namespace Parser {
             } while (this.shift());
 
             // get the last character of the number
-             c = this.previous.char;
+            c = this.previous.char;
             if ('+' == c || '-' == c) {
                 // if it's a + or -, then it's not part of the number; back it up one
                 this.index--;
@@ -652,7 +656,7 @@ export namespace Parser {
             while ((t = this.next()) && (this.isChar(t) || this.fastExec(this.IsUnicode)));
             return this.src.substr(i, this.index - i);
         }
-        
+
         isChar(t: Token) {
             return !t.type ? false : ((t.type & TokenType.alphanum) == t.type) || (t.code == 36 || t.code == 95);
         }
@@ -667,7 +671,7 @@ export namespace Parser {
                 c = this.getNextChar(true);
             }
         }
-        private IsLineTerminator(c:string, increment:number) {
+        private IsLineTerminator(c: string, increment: number) {
             switch (c) {
                 case '\u000d':
                     // treat 0x0D0x0A as a single character
@@ -802,7 +806,7 @@ export namespace Parser {
                             return this.JumpBy(2), JSToken.RestSpread;
                         else if (syntaxer.IsDigit(ch)) {
                             var c = {};
-                            val.value= this.ScanNumber('.',c);
+                            val.value = this.ScanNumber('.', c);
                         }
                         return JSToken.AccessField;
                     case '/':
@@ -940,8 +944,8 @@ export namespace Parser {
                     case 'x':
                     case 'y':
                     case 'z':
-                        
-                        
+
+
                         val.value = this.ScanIdentifier();
                         var e = Parser.JSKeyword.get(val.value as string);
                         if (e) {
@@ -981,11 +985,11 @@ export namespace Parser {
                         continue;
                 }
             }
-            
+
         }
     }
 
-    function clone(from: ParserResult, to: ParserResult):true {
+    function clone(from: ParserResult, to: ParserResult): true {
         to.tokon = from.tokon;
         to.resut = from.resut;
         to.msg = from.msg;
@@ -1022,7 +1026,7 @@ export namespace Parser {
                     if (p !== '!') {
                         if (s.next() && s.current.char == p)
                             rslt.resut = p + p;
-                         else return false;
+                        else return false;
                     } else rslt.resut = p;
                     return true;
                 }
@@ -1043,18 +1047,18 @@ export namespace Parser {
             }
             export function parent(s: syntaxer, rslt: ParserResult) {
                 if (s.current.char != '(') return false;
-                s.exec(expression,)
+                s.exec(expression)
             }
             export function Expre() {
 
             }
             function BiExpression(strm: syntaxer, rslt: ParserResult) {
-                
+
             }
             function expression(strm: syntaxer, rslt: ParserResult) {
                 return false;
             }
-            export function chain(s:parser) {
+            export function chain(s: parser) {
 
             }
         }
@@ -1062,7 +1066,7 @@ export namespace Parser {
             return !t.type ? false : ((t.type & TokenType.alphanum) == t.type) || (t.code == 36 || t.code == 95);
         }
 
-        export function _keyword(strm: syntaxer, word: string, rslt: ParserResult,token?:string|CToken) {
+        export function _keyword(strm: syntaxer, word: string, rslt: ParserResult, token?: string | CToken) {
             var t: Token = strm.current;
             rslt.tokon = token === void 0 ? 'keyword' : token;
             var i = 0;
@@ -1086,7 +1090,7 @@ export namespace Parser {
         export function keyword(word: string): parser {
             if (_str[word]) return _str[word];
             return _str[word] = function (b: syntaxer, rslt: ParserResult) {
-                return _keyword(b, word,rslt);
+                return _keyword(b, word, rslt);
             };
         }
         export function undefined(strm: syntaxer, rslt: ParserResult) {
@@ -1146,9 +1150,9 @@ export namespace Parser {
             rslt.tokon = CToken.number;
             var dot = 0;
             var hdig = false;
-            while (t.char === '-' || t.char === '+')  t = strm.next();
-            while(t) {
-                if (t.char === '.' ) {
+            while (t.char === '-' || t.char === '+') t = strm.next();
+            while (t) {
+                if (t.char === '.') {
                     if (dot) {
                         if (dot === strm.ShiftIndex + 1) {
                             strm.unshift();
@@ -1266,9 +1270,9 @@ export namespace Parser {
             b.exec(whitespace, true);
             var r = b.exec(word, true);
             if (!r.success) return false;
-            while (b.current && b.current.type == TokenType.dot ) {
+            while (b.current && b.current.type == TokenType.dot) {
                 b.next();
-                if (!b.exec(word,true)) return b.unshift();
+                if (!b.exec(word, true)) return b.unshift();
             }
             rslt.resut = b.CurrentString;
             return true;
@@ -1283,22 +1287,22 @@ export namespace Parser {
             } while (t = b.next());
             return !!rslt.resut;
         }
-        function prefixPath(b: syntaxer,result?:ParserResult) {            
+        function prefixPath(b: syntaxer, result?: ParserResult) {
             return b.exec(ors([keyword('this'), keyword('data'), anonymouseScop, namedScop, parents]));
         }
-        
+
         var PreffixcomposePathItem = _ors([keyword('this'), keyword('data'), keyword('window'), anonymouseScop, namedScop, parents]);
         var SuffixcomposePathItem = _ors([parent, subScop, typedScop, bindscope]);
         export function composedPath(b: syntaxer, rslt: ParserResult) {
             b.exec(whitespace, true);
             var path: ParserResult[] = [];
             var s = true;
-            var p = b.exec(PreffixcomposePathItem, true);            
+            var p = b.exec(PreffixcomposePathItem, true);
             var s = !p.success;
             !s && path.push(p);
             while ((s ? (s = false, true) : b.exec(keyword('.'), true).success) && (p = b.exec(SuffixcomposePathItem, true)).success)
                 path.push(p);
-            if (path.length == 1) 
+            if (path.length == 1)
                 return clone(path[0], rslt);
             rslt.tokon = CToken.path;
             rslt.resut = path;
@@ -1314,7 +1318,7 @@ export namespace Parser {
             var pr: ParserResult;
             if ((pr = b.exec(_ors([parent, functionCall, arrayCall, constant, composedPath]), true)).success)
                 return clone(pr, rslt);
-            
+
             return false;
         }
 
@@ -1332,10 +1336,10 @@ export namespace Parser {
             var s = true;
             rslt.tokon = CToken.functionCall;
             var result: FunctionResult = { args: [], caller: void 0 };
-            var child: ParserResult;rslt.resut
-            if ((child=b.exec(composedPath,true)).success && b.exec(keyword('('), true).success) {
+            var child: ParserResult; rslt.resut
+            if ((child = b.exec(composedPath, true)).success && b.exec(keyword('('), true).success) {
                 result.caller = child;
-                child = b.exec(expression,true);
+                child = b.exec(expression, true);
                 if (child.success) {
                     result.args.push(child);
                     while (b.exec(keyword(','), true).success && (child = b.exec(expression, true)).success)
@@ -1375,11 +1379,11 @@ export namespace Parser {
             thisscope,
             keyword,
         }
-        
 
 
 
-    
+
+
     }
     export interface IComposePath {
         t: parsers.coPathType;
@@ -1404,7 +1408,7 @@ export namespace Parser {
         var s = new Parser.syntaxer(str/*"$achour.brahim.[:app.coude].test.bind.kjh"*/);
         return s.exec(Parser.parsers.expression);
     }
-    export function Execute(code:string,parser:Parser.parser) {
+    export function Execute(code: string, parser: Parser.parser) {
         var s = new Parser.syntaxer(code);
         return s.exec(parser);
     }
@@ -1508,7 +1512,7 @@ export namespace Parser {
             var target = this.Token;
             return (target == token1) || (target == token2);
         }
-        public IsOne(...tokens:JSToken[]): boolean {
+        public IsOne(...tokens: JSToken[]): boolean {
             // if any one of the tokens match what we have, we're good
             if (tokens != null) {
                 var target = this.Token;
@@ -1596,7 +1600,7 @@ export namespace Parser {
                     //return ParseThrowStatement();
 
                     case JSToken.Try:
-                        //return ParseTryStatement();
+                    //return ParseTryStatement();
 
                     case JSToken.Function:
                     // parse a function declaration
@@ -1766,12 +1770,11 @@ export namespace Parser {
                 if (typeof s === 'string')
                     strs[i] = '"' + this.toRegString(s) + '"';
                 else {
-                     strs[i] = s.result;
+                    strs[i] = s.result;
                 }
             }
             return strs.join('');
         }
-       
+
     }
 }
-window['p'] = Parser;

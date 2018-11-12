@@ -2,13 +2,14 @@
 var isWorker = typeof importScripts === 'function' && !(typeof window !== 'undefined' && window instanceof Window);
 if (typeof exports === 'undefined' && typeof window !== 'undefined') window['exports'] = {};
 declare var Promise;
-interface IWorker {
-    addEventListener(k: 'error', handler: (e: ErrorEvent) => any, options?: boolean | AddEventListenerOptions);
-    addEventListener(k: 'message', handler: (e: MessageEvent) => any, options?: boolean | AddEventListenerOptions);
-    postMessage(message: any, targetOrigin: string, transfer?: any[]): void;
-}
 
 export namespace Workers {
+    export interface IWorker {
+        addEventListener(k: 'error', handler: (e: ErrorEvent) => any, options?: boolean | AddEventListenerOptions);
+        addEventListener(k: 'message', handler: (e: MessageEvent) => any, options?: boolean | AddEventListenerOptions);
+        postMessage(message: any, targetOrigin: string, transfer?: any[]): void;
+    }
+
     export namespace WebWorker {
         export interface IMessageAction<T> {
             Id: number;
@@ -189,46 +190,49 @@ export namespace Workers {
 
 
     }
-}
-var swReg: ServiceWorkerRegistration;
-function clone (obj) {
-    if (!obj)
-        return obj;
-    if (typeof obj === 'object') {
-        var copy = {};
-        for (var attr in obj)
-            if (obj.hasOwnProperty(attr))
-                copy[attr] = obj[attr];
-        return copy;
-    }
-    else if (obj instanceof Array)
-        return obj.splice(0);
-    return obj;
-};
-export class ServiceWorker {
 
-    public static Start(url: string, scope: string) {
-        return navigator.serviceWorker.register(url, scope ? { scope: scope } : void 0).then(reg => {
-            swReg = clone(swReg);
-            console.log("SW registration succeeded. Scope is " + reg.scope);
-        }).catch(err => {
-            console.error("SW registration failed with error " + err);
-        });
-    }
-    public static postMessageToSW<T>(data: Workers.WebWorker.IMessageAction<T>): Promise<{ Action: Workers.WebWorker.IMessageAction<T>, Result: Workers.WebWorker.IMessageResult<T> }> {
-        return new Promise((onSucc, onErr) => {
-            navigator.serviceWorker.getRegistration().then((reg) => {
-                var msg_chan = new MessageChannel();
-                reg.active.postMessage(data, [msg_chan.port2]);
-                msg_chan.port1.onmessage = (e) => {
-                    var dt = e.data as Workers.WebWorker.IMessageResult<T>;
-                    (dt.IsError ? onErr : onSucc)(dt.IsError ? { IsError: true, Action: data, Result: dt } : { Action: data, Result: dt });
-                };
-            }).catch(e => {
-                onErr({ IsError: true, Action: data, Result: e });
+    export class ServiceWorker {
+
+        public static Start(url: string, scope: string) {
+            return navigator.serviceWorker.register(url, scope ? { scope: scope } : void 0).then(reg => {
+                swReg = clone(swReg);
+                console.log("SW registration succeeded. Scope is " + reg.scope);
+            }).catch(err => {
+                console.error("SW registration failed with error " + err);
             });
-        });
+        }
+        public static postMessageToSW<T>(data: Workers.WebWorker.IMessageAction<T>): Promise<{ Action: Workers.WebWorker.IMessageAction<T>, Result: Workers.WebWorker.IMessageResult<T> }> {
+            return new Promise((onSucc, onErr) => {
+                navigator.serviceWorker.getRegistration().then((reg) => {
+                    var msg_chan = new MessageChannel();
+                    reg.active.postMessage(data, [msg_chan.port2]);
+                    msg_chan.port1.onmessage = (e) => {
+                        var dt = e.data as Workers.WebWorker.IMessageResult<T>;
+                        (dt.IsError ? onErr : onSucc)(dt.IsError ? { IsError: true, Action: data, Result: dt } : { Action: data, Result: dt });
+                    };
+                }).catch(e => {
+                    onErr({ IsError: true, Action: data, Result: e });
+                });
+            });
+        }
     }
+
+    var swReg: ServiceWorkerRegistration;
+    function clone(obj) {
+        if (!obj)
+            return obj;
+        if (typeof obj === 'object') {
+            var copy = {};
+            for (var attr in obj)
+                if (obj.hasOwnProperty(attr))
+                    copy[attr] = obj[attr];
+            return copy;
+        }
+        else if (obj instanceof Array)
+            return obj.splice(0);
+        return obj;
+    };
+
+    if (typeof window !== 'undefined')
+        window['SW'] = ServiceWorker;
 }
-if (typeof window !== 'undefined')
-    window['SW'] = ServiceWorker;

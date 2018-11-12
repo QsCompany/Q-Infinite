@@ -1,62 +1,64 @@
-//// <reference path="../lib/Module.d.ts" />
+/// <reference path="../qloader.d.ts" />
 import { context } from 'context';
 import { UI } from './UI';
-import * as plg_template from 'plugin|template';
-import * as plg_json from 'plugin|json';
+// import * as plg_template from 'plugin|template';
+// import * as plg_json from 'plugin|json';
 import { models } from './QModel';
 import { Parser } from './Syntaxer';
 import value from 'html|*';
+namespace __corelib__ {
+    
+    var plg_template = require('plugin|template');
+    var plg_json = require('plugin|json');
+    export const key = [234, 23, 196, 234, 69, 238, 92, 244, 50, 110, 70, 181, 109, 139, 252, 209, 146, 174, 40, 140, 129, 41, 58, 89, 102, 193, 99, 194, 178, 192, 239, 152];
 
-if (plg_template)
-    plg_template.addEventListener(ModuleStat.Executed, (e) => mvc.Initializer.Register(e), null);
-if (plg_json)
-    plg_json.addEventListener(ModuleStat.Executed, (e) => {
-        var c = encoding.SerializationContext.GlobalContext.reset();
-        var v = e.exports.value;
-        var type = v.__type__;
-        var name = v.__name__;
-        var tt = c.FromJson(v, context.GetType(type) || Object, new encoding.Path(e, 'data'));
+    export var _Instance: mvc.Initializer;
+    if (plg_template)
+        plg_template.addEventListener(ModuleStat.Executed, (e) => mvc.Initializer.Register(e), null);
+    if (plg_json)
+        plg_json.addEventListener(ModuleStat.Executed, (e) => {
+            var c = encoding.SerializationContext.GlobalContext.reset();
+            var v = e.exports.value;
+            var type = v.__type__;
+            var name = v.__name__;
+            var tt = c.FromJson(v, context.GetType(type) || Object, new encoding.Path(e, 'data'));
 
-    }, null);
-declare var stop;
-declare var document;
-var OnNodeLoaded = 'DOMNodeInsertedIntoDocument';
-// best framework material ui  :::http://framework7.io/apps/
-//best css material ui ::::http://materializecss.com/getting-started.html
-
-
-function $defineProperty(o: any, p: string, attributes: PropertyDescriptor & ThisType<any>, onError?: (o: any, p: string, attributes: PropertyDescriptor & ThisType<any>) => any): any {
-    return helper.TryCatch(Object, Object.defineProperty, onError as any, [o, p, attributes]) || false;
-}
-; (function (constructor) {
-    if (constructor &&
-        constructor.prototype &&
-        constructor.prototype.childElementCount == null) {
-        Object.defineProperty(constructor.prototype, 'childElementCount', {
-            get: function () {
-                var i = 0, count = 0, node, nodes = this.childNodes;
-                while (node = nodes[i++]) {
-                    if (node.nodeType === 1) count++;
-                }
-                return count;
-            }
+        }, null);
+    
+    export function $defineProperty(o: any, p: string, attributes: PropertyDescriptor & ThisType<any>, onError?: (o: any, p: string, attributes: PropertyDescriptor & ThisType<any>) => any): any {
+        return helper.TryCatch(Object, Object.defineProperty, onError as any, [o, p, attributes]) || false;
+    }
+    
+    export function setProperty<T>(type: typeof Object, p: bind.DProperty<T, bind.DObject>) {
+        $defineProperty(type.prototype, p.Name, {
+            get: function () { return this.get(p); },
+            set: function (v: T) { this.set(p, v); },
+            configurable: false,
+            enumerable: false
         });
     }
-})((window as any).Node || (window as any).Element);
-export declare type GFunction = Function | reflection.GenericType | reflection.DelayedType;
-export declare type Guid = number;
+    (function (constructor) {
+        if (constructor &&
+            constructor.prototype && !('childElementCount' in constructor.prototype)) {
+            Object.defineProperty(constructor.prototype, 'childElementCount', {
+                get: function () {
+                    var i = 0, count = 0, node, nodes = this.childNodes;
+                    while (node = nodes[i++]) {
+                        if (node.nodeType === 1) count++;
+                    }
+                    return count;
+                }
+            });
+        }
+    })((window as any).Node || (window as any).Element);
+    export const  max = 9223372036854775807;
+}
+declare var stop: () => void;
 
-var _Instance: mvc.Initializer;
-const max = 9223372036854775807;
-var jobs = {};
-//secured vars
-var isRunning = false;
-var id = -1;
-var stack: thread.IDispatcherCallback[] = [];
-var djobs: thread.IDispatcherCallback[] = [];
-var cj = 0;
-//end secured vars
-var _p = false;
+export declare type GFunction = Function | reflection.GenericType | reflection.DelayedType;
+
+
+
 export namespace Common {
     export var Message: models.Message = null;
     export var Math = Math;
@@ -76,6 +78,65 @@ namespace vars {
 
 
 export namespace css {
+
+    
+   export var cssRules = [];
+export class CSSRule {
+    constructor(cssrule, parent) {
+        var t;
+        t = this;
+        if (cssrule instanceof CSSMediaRule) {
+            var mr = cssrule;
+            var rs = mr.cssRules;
+            for (var j = 0; j < rs.length; j++) {
+                var r = rs[j];
+                if (r instanceof CSSMediaRule)
+                    new CSSRule(r, this);
+            }
+            t.IsMedia = true;
+        }
+        if (parent) {
+            t.Parent = parent;
+            if (!parent.children) parent.children = [this];
+            else parent.children.push(this);
+        }
+        cssRules.push(this); t.Rule = cssrule;
+    }
+    Dispose() {
+        var i = cssRules.indexOf(this);
+        if (i == -1) return;
+        cssRules.splice(i, 1);
+    }
+    get Selectors() {
+        var t = null;
+        t = this;
+        var r = t.Rule;
+        if (t.IsMedia) {
+            return [];
+        }
+        t._selectors = r.selectorText.split(',');
+        return t._selectors;
+    }
+    IsMatch(selector) {
+        var c = this.Selectors;
+        for (var i = 0; c.length; i++) {
+            //var x = c[i].split(/\:\+\>/);
+        }
+    }
+} 
+export function collectCss() {
+    var d;
+    d = document;
+    var ss = d.styleSheets;
+    for (var i = 0; i < ss.length; i++) {
+        var s = ss.item(i);
+        var rs = s.cssRules;
+        for (var j = 0; j < rs.length; j++) {
+            var r = rs[j];
+            new CSSRule(r, null);
+        }
+    }
+}
     export function getVar(name: string) {
 
     }
@@ -456,9 +517,12 @@ export namespace basic {
 
         }
         (() => {
+            var arr = new Array(1);
             for (var i = 0; i < localStorage.length; i++) {
                 var n = localStorage.key(i);
-                _store[n] = helper.TryCatch(JSON, JSON.parse, void 0, [localStorage.getItem(n)]);
+                arr[0] = localStorage.getItem(n);
+                if (!arr[0] || arr[0] === 'undefined') _store[n] = void 0;
+                _store[n] = helper.TryCatch(JSON, JSON.parse, void 0, arr);
             }
         })();
     }
@@ -480,7 +544,7 @@ export namespace basic {
         export function IsTemplate(x) {
             return supportTemplate ? x instanceof HTMLTemplateElement : (x instanceof HTMLUnknownElement) && x.tagName === 'TEMPLATE';
         }
-        if (!supportTemplate) $defineProperty(HTMLUnknownElement.prototype, 'content', { get: function () { return this.tagName === 'TEMPLATE' ? this : undefined; } });
+        if (!supportTemplate) __corelib__.$defineProperty(HTMLUnknownElement.prototype, 'content', { get: function () { return this.tagName === 'TEMPLATE' ? this : undefined; } });
     }
     function defaultUrl(url) {
         if (!url) url = document.location.origin;
@@ -510,7 +574,7 @@ export namespace basic {
     export function New() {
         if (_guid == null || _guid >= _end) {
             var x = Date.now() * 100000 + Math.floor(Math.random() * 775823);
-            return x < max ? x : (Date.now() * 10000) / 10000 | (Math.random() * 771);
+            return x < __corelib__. max ? x : (Date.now() * 10000) / 10000 | (Math.random() * 771);
         } else {
             if (_guid >= _end - 300) GuidManager.update();
             return _guid++;
@@ -973,7 +1037,7 @@ export namespace basic {
             return rs;
         }
         private static params = ["$ovalue", "$value", "$scope", "$dom", "$job", "$fn"];
-        public generateFn(stack: (string |Parser. ICode)[], hasNoReturn?: boolean) {
+        public generateFn(stack: (string | Parser. ICode)[], hasNoReturn?: boolean) {
             var strs = new Array(stack.length);
             var hasCode = false;
             for (var i = 0; i < stack.length; i++) {
@@ -1106,7 +1170,7 @@ export namespace basic {
             register(rg);
             return rg;
         }
-        $defineProperty(window, "defineExpression", { get: () => { return defineExpression; }, set: () => { }, configurable: false, enumerable: false });
+        __corelib__.$defineProperty(window, "defineExpression", { get: () => { return defineExpression; }, set: () => { }, configurable: false, enumerable: false });
     }
     export class StringCompile {
 
@@ -1324,12 +1388,12 @@ export namespace basic {
 
                 // The 'document.documentMode' checks below ensure that PathJS fires the right events
                 // even in IE "Quirks Mode".
-                if ("onhashchange" in window && (!document.documentMode || document.documentMode >= 8)) {
+                if ("onhashchange" in window && (!(document as any).documentMode || (document as any).documentMode >= 8)) {
                     var cc = Object.getOwnPropertyDescriptor(window, 'onhashchange');
-                    $defineProperty(window, 'onhashchange', { set: function (v) { cc.set.call(this, fn); }, get: function () { return fn; }, configurable: false, enumerable: false });
+                    __corelib__.$defineProperty(window, 'onhashchange', { set: function (v) { cc.set.call(this, fn); }, get: function () { return fn; }, configurable: false, enumerable: false });
 
                     var cc = Object.getOwnPropertyDescriptor(window, 'onpopstate');
-                    $defineProperty(window, 'onpopstate', { set: function (v) { cc.set.call(this, fn); }, get: function () { return fn; }, configurable: false, enumerable: false });
+                    __corelib__.$defineProperty(window, 'onpopstate', { set: function (v) { cc.set.call(this, fn); }, get: function () { return fn; }, configurable: false, enumerable: false });
 
                 } else {
                     setInterval(fn, 50);
@@ -1963,7 +2027,7 @@ export namespace query {
 export function $$(dom: Node | Node[]) { return query.$$(dom); }
 
 export namespace reflection {
-
+    var _p=false;
     export interface ICallHistory {
         caller: any;
         arguments: any[];
@@ -2262,7 +2326,7 @@ export namespace reflection {
         var events = [];
         export function observeProperty(obj, propName: string, evnt: string) {
             var c = Object.getOwnPropertyDescriptor(obj, propName);
-            $defineProperty(obj, propName, {
+            __corelib__.$defineProperty(obj, propName, {
                 get: c.get,
                 set: function (v) {
                     var oldValue = c.get.call(this);
@@ -2282,7 +2346,7 @@ export namespace reflection {
         }
 
         export function setObservableProperty<T>(obj, propName: string, get: () => T, set: (val: T) => void, evnt: string) {
-            $defineProperty(obj, propName, {
+            __corelib__.$defineProperty(obj, propName, {
                 get: get,
                 set: function (v) {
                     var oldValue = get.call(this);
@@ -2301,7 +2365,7 @@ export namespace reflection {
             });
         }
 
-        $defineProperty(Node.prototype, 'value', { get: function () { return this.textContent; }, set: function (v) { this.textContent = v; } });
+        __corelib__.$defineProperty(Node.prototype, 'value', { get: function () { return this.textContent; }, set: function (v) { this.textContent = v; } });
 
         observeProperty(Node.prototype, 'textContent', 'textContentChanged');
 
@@ -2323,64 +2387,11 @@ export namespace reflection {
     }
 }
 
-export namespace services {
-    export var Service = (function () {
-        function execute() {
-            var i = binds.length > 100 ? 100 : binds.length;
-            while (i > 0) {
-                i--;
-                var t = binds.pop();
-                var bs: bind.PropBinding[] = t[0];
-                var arg: bind.EventArgs<any, any> = t[1];
-                for (var i = 0; i < bs.length; i++) {
-                    var b = bs[i];
-                    b.handleEvent(arg);
-                    b.IsWaiting = false;
-                }
-            }
-        }
-        class Service {
-            public static Push(ps: bind.PropBinding[], e: bind.EventArgs<any, any>) {
-                var a = (e.prop as any).IsAsync;
-                var x = new Array<bind.PropBinding>();
-                for (var i = 0; i < ps.length; i++) {
-                    var p = ps[i];
-                    if (a) {
-                        if (!p.IsWaiting) {
-                            p.IsWaiting = true;
-                            x.push(p);
-                        }
-                        continue;
-                    } else
-                        p.handleEvent(e);
-                }
-                if (x.length > 0) binds.push([x, e]);
-            }
-            public static Close() {
-                isRunning = true;
-                clearInterval(id);
-            }
-            public static Restart() {
-                clearInterval(id);
-                id = setInterval(execute, 1000);
-                isRunning = true;
-            }
-
-            public static get IsRunning() { return isRunning; }
-        }
-        //let id = setInterval(execute, 100);
-        let isRunning: boolean = true;
-        let binds: any[] = [];
-        return Service as any;
-    })();
-}
-
 namespace internal {
     export class __data {
         constructor(public name: string, public event: string, public delegate: EventListenerOrEventListenerObject) { }
     }
 }
-
 
 export namespace attributes {
     var _store = new Map();
@@ -2439,6 +2450,7 @@ export namespace attributes {
 }
 
 export namespace bind {
+    var jobs = {};
     export class Job implements basic.IJob {
 
         constructor(
@@ -2566,6 +2578,12 @@ export namespace bind {
 
 export namespace thread {
 
+    //secured vars
+    var isRunning = false;
+    var id = -1;
+    var stack: thread.IDispatcherCallback[] = [];
+    var djobs: thread.IDispatcherCallback[] = [];
+    var cj = 0;
     export interface IDispatcherCallback {
         callback: (delegate: (...param: any[]) => void, param: any, _this: any) => void;
         params: JobParam;
@@ -3150,7 +3168,7 @@ export namespace bind {
         private static getId(type: any) {
             if (type.hasOwnProperty("__id__")) return type.__id__;
             var val = ++DObject.typeCount;
-            $defineProperty(type, "__id__", {
+            __corelib__.$defineProperty(type, "__id__", {
                 value: val, writable: false, configurable: false, enumerable: false
             });
             return val;
@@ -3178,7 +3196,7 @@ export namespace bind {
             if (obj instanceof this || obj.hasOwnProperty("__id__")) return obj;
             var type = obj.getType instanceof Function ? obj.getType() : obj.constructor;
             if (!type.hasOwnProperty("__id__"))
-                $defineProperty(type, "__id__", {
+                __corelib__.$defineProperty(type, "__id__", {
                     value: -1, writable: false, configurable: false, enumerable: false
                 });
             else if (type !== -1) throw "Invalid type";
@@ -3187,7 +3205,7 @@ export namespace bind {
             for (var i = 0; i < props.length; i++) {
                 var dp = flds[i] = this._buildProperty(obj, props[i]);
                 dp.Index = i;
-                setProperty(obj, dp);
+                __corelib__. setProperty(obj, dp);
             }
         }
 
@@ -3225,7 +3243,7 @@ export namespace bind {
                         if (!(dp.Type instanceof reflection.DelayedType))
                             Object.freeze(dp);
                         if (!bc.prototype.hasOwnProperty(dp.Name))
-                            setProperty(bc, dp);
+                           __corelib__. setProperty(bc, dp);
                         u.Fields.push(dp);
                     }
                     attributes.Delete(bc);
@@ -3431,11 +3449,11 @@ export namespace bind {
         public IsFrozen() { return this._isFrozen; }
         public CreateBackup(OnUndo?: (self: this, bl: BuckupList<this>) => void) {
             var e: BuckupList<this>;
-            backups.GetOrAdd(this.store, []).push(e = { OnUndo: OnUndo, values: this.store.map((p, i) => { return p.Value }) });
+            __corelib__.backups.GetOrAdd(this.store, []).push(e = { OnUndo: OnUndo, values: this.store.map((p, i) => { return p.Value }) });
             return e;
         }
         public Commit(r?: BuckupList<any>) {
-            var l = backups.Get(this.store);
+            var l = __corelib__.backups.Get(this.store);
             if (l == null || l.length === 0) return false;
             if (r) {
                 var i = l.indexOf(r);
@@ -3445,7 +3463,7 @@ export namespace bind {
         }
         public Rollback(b?: BuckupList<this>, walkTrougth?: boolean): boolean {
             if (b) return this.UndoTo(b, walkTrougth);
-            var l = backups.Get(this.store);
+            var l = __corelib__.backups.Get(this.store);
             if (l == null || l.length === 0) return false;
             var x = l.pop();
             var ps = DObject._dpStore[(this.constructor as any).__id__];
@@ -3457,7 +3475,7 @@ export namespace bind {
         }
 
         private UndoTo(b: BuckupList<this>, walkTrougth: boolean): boolean {
-            var l = backups.Get(this.store);
+            var l = __corelib__.backups.Get(this.store);
             if (l == null || l.length === 0) return;
             var i = l.indexOf(b);
             if (i === -1) return false;
@@ -4913,13 +4931,13 @@ export namespace mvc {
     export class Initializer {
 
         public static get Instances(): Initializer {
-            return _Instance || (_Instance = new Initializer(require));
+            return __corelib__._Instance || (__corelib__._Instance = new Initializer(require));
         }
 
         constructor(private require: (modules: string, onsuccss?: (result: any) => void, onerror?: (result: any) => void, context?: any) => void) {
             if (require == null) throw 'require argument is null';
-            if (_Instance) throw "App cannot have more than initializer";
-            _Instance = this;
+            if (__corelib__._Instance) throw "App cannot have more than initializer";
+            __corelib__._Instance = this;
             this.Init();
         }
         Init() { }
@@ -5008,7 +5026,7 @@ export namespace mvc {
                 Initializer.callbacks[i](t);
         }
         public static Get(type: Function) {
-            var n = _Instance.System;
+            var n = __corelib__._Instance.System;
             {
                 var l = n.Count;
                 for (var i = 0; i < l; i++) {
@@ -5159,6 +5177,7 @@ export namespace mvc {
 }
 
 export namespace bind {
+    
     export interface IJobCollection { [s: string]: basic.IJob; }
     export abstract class Scop extends bind.DObject {
         private _scops: basic.scopCollection;
@@ -5276,7 +5295,7 @@ export namespace bind {
             return parent;
         }
         
-        public static BuildScop(p: Parser.ParserResult, parent: Scop, bindingMode:bind.BindingMode, controller?: Controller,) {
+        public static BuildScop(p:Parser.ParserResult, parent: Scop, bindingMode:bind.BindingMode, controller?: Controller,) {
             var scop: Scop = parent;
             switch (p.tokon) {
                 case 'keyword':     
@@ -5305,7 +5324,7 @@ export namespace bind {
                     scop.setParent(parent);
                     break;
                 case Parser.CToken.functionCall:
-                    scop = new FunctionCallScop((p.resut as Parser.parsers.FunctionResult), parent, controller);
+                    scop = new FunctionCallScop((p.resut as Parser.parsers.FunctionResult), parent, controller, bindingMode);
                     scop.setParent(parent);
                     break;
                 case Parser.CToken.arrayCall:
@@ -5455,7 +5474,7 @@ export namespace bind {
     }
     export class FunctionCallScop extends bind.Scop {
         protected _OnValueChanged(e: EventArgs<any, any>) { }
-        Reset(s?: PropBinding, e?: EventArgs<any, Scop>) {
+        Invoke(s?: PropBinding, e?: EventArgs<any, Scop>) {
             var caller = this.caller.scop.Value as Function;
             if (typeof caller !== 'function') {
                 this.Value = caller;
@@ -5470,12 +5489,13 @@ export namespace bind {
         }
         private args: { scop: Scop, isConstant: boolean, pb?: bind.PropBinding, value?: any  }[];
         private caller: { scop: Scop, pb?: bind.PropBinding};
-        constructor(rslt: Parser.parsers.FunctionResult, _parent: bind.Scop, controller?: Controller) {
-            super(1);
+        constructor(rslt: Parser.parsers.FunctionResult, _parent: bind.Scop, controller?: Controller, mode: bind.BindingMode = 1) {
+            super(mode);
             this.caller = {
                 scop: Scop.BuildScop(rslt.caller, _parent, BindingMode.SourceToTarget, controller)
             };
-            this.caller.pb = this.caller.scop.OnPropertyChanged(Scop.DPValue, this.Reset, this);
+            if (this._bindingMode)
+                this.caller.pb = this.caller.scop.OnPropertyChanged(Scop.DPValue, this.Invoke, this);
 
             this.args = new Array(rslt.args.length);
             for (var i = 0; i < rslt.args.length; i++) {
@@ -5485,10 +5505,11 @@ export namespace bind {
                     value: isConstant(arg) ? arg.resut : void 0,
                     scop: isConstant(arg) ? void 0 : Scop.BuildScop(arg, _parent, BindingMode.SourceToTarget, controller)
                 };
-                if (!this.args[i].isConstant)
-                    this.args[i].pb = this.args[i].scop.OnPropertyChanged(Scop.DPValue, this.Reset, this);
+                if (!this.args[i].isConstant && this._bindingMode)
+                    this.args[i].pb = this.args[i].scop.OnPropertyChanged(Scop.DPValue, this.Invoke, this);
             }
-            this.Reset();
+            if (this._bindingMode)
+                this.Invoke();
         }
     }
     export class ArrayCallScop extends bind.Scop {
@@ -5496,7 +5517,8 @@ export namespace bind {
         Reset(s?: PropBinding, e?: EventArgs<any, Scop>) {
             var caller = this.caller.scop.Value;
             var index = this.index.isConstant ? this.index.value : this.index.scop.Value;
-            if (caller instanceof collection.List)
+            if (caller == void 0) this.Value = void 0;
+            else if (caller instanceof collection.List)
                 this.Value = caller.Get(index);
             else this.Value = caller[index];
         }
@@ -5841,30 +5863,44 @@ export namespace bind {
         }
     }
 
-    export interface EventData {
-        dom: Node; scop: Scop; controller: Controller
-    }
+    export class EventData {
+        scop?: Scop;
+        constructor(public events: events, public interpolation: string) {
 
+        }
+        get dom() {return this.events.xx.Dom;}
+        get controller() { return this.events.xx.controller; }
+        get parentScop() { return this.events.xx.Scop; }
+    }
     export class events implements basic.IJob, EventListenerObject {
         private events: { [eventType: string]: EventData[] };
         Name: string = "Events";
         Todo?(job: JobInstance, e: EventArgs<any, any>): void {
             throw new Error("Method not implemented.");
         }
-        Register(eventType: string, dom: Node, scop: Scop, controller: Controller) {
+        Register(eventType: string, v: string) {
             if (!this.events) this.events = {};
             var a = this.events[eventType];
-            var s = { scop: scop, controller: controller, dom: dom };
+            var s: EventData = new EventData(this, v);
             if (!a) {
                 this.events[eventType] = a = [s];
-                dom.addEventListener(eventType, this);
+                this.xx.Dom.addEventListener(eventType, this);
             }
             else a.push(s);
+
+        }
+        private getScop(e: EventData):EventData {
+            if (e.scop !== undefined) return e;
+            if (e.interpolation.indexOf('.') == 0) var parentScop = this.xx.Scop, v = v.substring(1);
+            else var parentScop = this.scop;            
+            e.scop = bind.Scop.Create(e.interpolation, parentScop, 0, this.xx.controller);
+            if (!e.scop) e.scop = null;
+            return e;
         }
         handleEvent(e: Event) {
             var scps = this.events[e.type];
             for (var i = 0; i < scps.length; i++) {
-                var scp = scps[i];
+                var scp = this.getScop(scps[i]);
                 helper.TryCatch(this, this.exec, void 0, [scp, this.scop, e]);
             }
         }
@@ -5872,6 +5908,8 @@ export namespace bind {
         private exec(dt: EventData, scopValue: Scop, e: Event) {
             var scp = dt.scop;
             var scpv = scp.Value;
+            if (scp instanceof FunctionCallScop)
+                return scp.Invoke();
             if (typeof scpv === 'function') {
                 var p = scp.ParentValue;
                 scpv.call(p, e, dt, scopValue, this);
@@ -5879,7 +5917,8 @@ export namespace bind {
                 scpv.handleEvent(e, dt, scopValue, this);
             }
         }
-        constructor(public scop: Scop) { }
+        constructor(public xx: Processor.Tree, private m: Processor.Manager, ) { this.scop = xx.Scop; }
+        public scop: Scop
     }
     export abstract class Filter<T, CT> extends Scop {
         private dbb: PropBinding;
@@ -5963,7 +6002,7 @@ export namespace bind {
     var filters = {};
     export function RegisterFilter(filter: IFilter) {
         if (filters[filter.Name]) return false;
-        $defineProperty(filters, filter.Name, { value: filter, writable: false, configurable: false, enumerable: false });
+        __corelib__.$defineProperty(filters, filter.Name, { value: filter, writable: false, configurable: false, enumerable: false });
         return true;
     }
     export function CreateFilter(filterName: string, parent: Scop, bindingMode: BindingMode) {
@@ -6353,10 +6392,8 @@ export namespace Processor {
             if (!m.events) return;
             var x: bind.events;
             for (var i in m.events) {
-                if (!x) x = new bind.events(xx.Scop);
-                var v = m.events[i];
-                if (v.indexOf('.') == 0) parentScop = xx.Scop, v = v.substring(1);
-                x.Register(i, e.dom, bind.Scop.Create(v, parentScop, 0, controller), controller);
+                if (!x) x = new bind.events(xx, m);
+                x.Register(i, m.events[i]);
             }
             return x;
         }
@@ -6477,7 +6514,7 @@ export namespace Api {
         var c = _apis[api.Name];
         if (c == null) {
             c = { Callback: [api], Trigger: undefined };
-            $defineProperty(_apis, api.Name, { value: c, configurable: false, enumerable: false, writable: false });
+            __corelib__.$defineProperty(_apis, api.Name, { value: c, configurable: false, enumerable: false, writable: false });
         } else {
             if (c.Callback.indexOf(api) !== -1) return;
             c.Callback.push(api);
@@ -7452,7 +7489,7 @@ export namespace encoding {
                 return continuationByte & 0x3F;
             }
 
-            // If we end up here, it’s not a continuation byte
+            // If we end up here, itï¿½s not a continuation byte
             throw Error('Invalid continuation byte');
         }
 
@@ -7707,12 +7744,12 @@ namespace help {
     export function OnNodeInserted(controller: bind.Controller, dom: Node) {
         f.add(dom, controller);
         if (!__global.useListenerOrMutation)
-            dom.addEventListener(OnNodeLoaded, controller);
+            dom.addEventListener("DOMNodeInsertedIntoDocument", controller);
     }
     export function RemoveListener(dom: Node) {
         var c = f.Dispose(dom);
         if (!__global.useListenerOrMutation)
-            dom.removeEventListener(OnNodeLoaded, c);
+            dom.removeEventListener("DOMNodeInsertedIntoDocument", c);
     }
     function observe(mutations: MutationRecord[], observer: MutationObserver): void {
         var cmd: string;
@@ -7772,7 +7809,6 @@ namespace help {
     init();
 
 }
-var ttt = true;
 
 export namespace net {
     export class Header {
@@ -7855,7 +7891,7 @@ export namespace net {
                         p.Owner.http.removeEventListener('error', p);
                     }));
             if (typeof __global.https != 'undefined' && __global.https)
-                this.crypt = new crypto.AesCBC(key.slice(0));
+                this.crypt = new crypto.AesCBC(__corelib__. key.slice(0));
             this.http.addEventListener('error', this.downloadDelegate);
         }
 
@@ -7917,7 +7953,7 @@ export namespace net {
         }
 
         public Download2(c: Request) {
-            if (c.url.beforRequest && !c.url.beforRequest(c.url))
+            if (c.url.beforRequest && !(c as any).url.beforRequest(c.url))
                 return this.OnComplete && this.OnComplete.Invoke(this.key, [this]);
             
             var req = c.url;
@@ -8872,126 +8908,24 @@ export module crypto1 {
         }
     }
 }
-
+namespace __corelib__ {
+    export const backups = new collection.Dictionary<Array<any>, BuckupList<any>[]>("buckups");
+    
+    bind.NamedScop.Create('window', window, <bind.BindingMode>0);
+}
 export interface BuckupList<T> {
     values: any[];
     OnUndo?: (self: T, bl: BuckupList<T>) => void;
 }
 
-var backups = new collection.Dictionary<Array<any>, BuckupList<any>[]>("buckups");
 
-function setProperty<T>(type: typeof Object, p: bind.DProperty<T, bind.DObject>) {
-    $defineProperty(type.prototype, p.Name, {
-        get: function () { return this.get(p); },
-        set: function (v: T) { this.set(p, v); },
-        configurable: false,
-        enumerable: false
-    });
-}
-var key = [234, 23, 196, 234, 69, 238, 92, 244, 50, 110, 70, 181, 109, 139, 252, 209, 146, 174, 40, 140, 129, 41, 58, 89, 102, 193, 99, 194, 178, 192, 239, 152];
 
-var cssRules = [];
-class CSSRule {
-    constructor(cssrule, parent) {
-        var t;
-        t = this;
-        if (cssrule instanceof CSSMediaRule) {
-            var mr = cssrule;
-            var rs = mr.cssRules;
-            for (var j = 0; j < rs.length; j++) {
-                var r = rs[j];
-                if (r instanceof CSSMediaRule)
-                    new CSSRule(r, this);
-            }
-            t.IsMedia = true;
-        }
-        if (parent) {
-            t.Parent = parent;
-            if (!parent.children) parent.children = [this];
-            else parent.children.push(this);
-        }
-        cssRules.push(this); t.Rule = cssrule;
-    }
-    Dispose() {
-        var i = cssRules.indexOf(this);
-        if (i == -1) return;
-        cssRules.splice(i, 1);
-    }
-    get Selectors() {
-        var t = null;
-        t = this;
-        var r = t.Rule;
-        if (t.IsMedia) {
-            return [];
-        }
-        t._selectors = r.selectorText.split(',');
-        return t._selectors;
-    }
-    IsMatch(selector) {
-        var c = this.Selectors;
-        for (var i = 0; c.length; i++) {
-            //var x = c[i].split(/\:\+\>/);
-        }
-    }
-}
-function collectCss() {
-    var d;
-    d = document;
-    var ss = d.styleSheets;
-    for (var i = 0; i < ss.length; i++) {
-        var s = ss.item(i);
-        var rs = s.cssRules;
-        for (var j = 0; j < rs.length; j++) {
-            var r = rs[j];
-            new CSSRule(r, null);
-        }
-    }
-}
 export namespace Ids {
     export class t1 { }
     export class t2 { }
     export class t3 { }
 }
 
-class JsonFileParser {
-    private static context: encoding.SerializationContext = new encoding.SerializationContext(true);
-    static parse(x: any, scop: any, name: string) {
-        name = name || x.__name__;
-        var value = x.value;
-        switch (x.__type__) {
-            case 'namespace':
-                scop[name] = this.parseNamedScop(x);
-                break;
-            case 'namedscop':
-                this.context.FromJson(x, bind.NamedScop, new encoding.Path(scop, name));
-                break;
-            case 'valuepace':
-                this.context.FromJson(x, bind.ValueScop, new encoding.Path(scop, name));
-                break;
-            case 'stringscop':
-                this.context.FromJson(x, bind.StringScop, new encoding.Path(scop, name));
-                break;
-            case 'templatestring':
-                this.context.FromJson(x, bind.NamedScop, new encoding.Path(scop, name));
-                break;
-            case 'template':
-                this.context.FromJson(x, bind.NamedScop, new encoding.Path(scop, name));
-                break;
-            case Parser.CToken.functionCall:
-
-                break;
-            default:
-                break;
-        }
-        return scop;
-    }
-    static parseNamespace(x: any) {
-
-    }
-    static parseNamedScop(x) {
-
-    }
-}
 
 export namespace injecter {
 
@@ -9238,7 +9172,7 @@ export namespace Notification {
     var _store: NotificationsStore = {};
     var id = 0;
     export function on(name: string, handler: NotificationHandler<any>) {
-        $defineProperty(handler, 'Id', { value: handler.Id || ++id, writable: false, configurable: false, enumerable: true });
+        __corelib__.$defineProperty(handler, 'Id', { value: handler.Id || ++id, writable: false, configurable: false, enumerable: true });
         if (!_store[name]) _store[name] = [handler];
         else _store[name].push(handler);
     }
@@ -9446,64 +9380,3 @@ export namespace PaintThread {
     }
 }
 
-namespace JobsQuee1 {
-    enum JobsQueeStat {
-        Stoped = 0,
-        Waitting = 1,
-        Executing = 2
-    }
-
-    interface task {
-        prop: bind.DProperty<any, any>;
-        value: any;
-        scop: bind.Scop;
-    }
-    var _stat: JobsQueeStat = 0;
-    var _array: task[] = new Array<task>(100);
-    var currIndex = -1;
-    export function Push(scop: bind.Scop, prop: bind.DProperty<any, any>, value: any) {
-        switch (_stat) {
-            case JobsQueeStat.Stoped:
-                _stat = JobsQueeStat.Waitting;
-                _defreredExecution();
-            case JobsQueeStat.Waitting:
-                var t = _array[++currIndex];
-                if (t) {
-                    t.prop = prop;
-                    t.value = value;
-                    t.scop = scop;
-                } else _array[currIndex] = { prop, scop, value };
-                break;
-            case JobsQueeStat.Executing:
-                _execute({ prop, scop, value });
-                break;
-        }
-    }
-    function _defreredExecution() {
-        var raf: typeof window.requestAnimationFrame = window.requestAnimationFrame
-            || (window).webkitRequestAnimationFrame
-            || (window as any).mozRequestAnimationFrame
-            || (window as any).msRequestAnimationFrame;
-        if (raf) {
-            raf(_defreredExecution)
-        }
-        else if (!thread.Dispatcher.InIdle())
-            thread.Dispatcher.OnIdle(PaintThread, _executeAll, true);
-        else
-            thread.Dispatcher.call(JobsQuee1, () => {
-                thread.Dispatcher.OnIdle(PaintThread, _executeAll, true);
-            });
-    }
-    function _execute(e: task) {
-        try {
-            (e.scop as any).set(e.prop, e.value);
-        } catch { }
-    }
-    function _executeAll() {
-        _stat = JobsQueeStat.Executing;
-        for (; currIndex >= 0; currIndex--)
-            _execute(_array[currIndex]);
-        _stat = JobsQueeStat.Stoped;
-    }
-}
-bind.NamedScop.Create('window', window, <bind.BindingMode>0);

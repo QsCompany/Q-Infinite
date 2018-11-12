@@ -187,7 +187,7 @@ export module Material {
 
         css(el:Element) {
             var sheets = document.styleSheets, ret = [];
-            el.matches = el.matches || el.webkitMatchesSelector || el.msMatchesSelector;
+            el.matches = el.matches || el.webkitMatchesSelector || (el as any).msMatchesSelector;
             
             return ret;
         }

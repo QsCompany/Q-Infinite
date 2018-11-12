@@ -1,0 +1,39 @@
+﻿.app{
+
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: grid;
+    grid-template-rows: 80px 1fr;
+    grid-template-columns: 200px 1fr;
+    grid-template-areas: "head head" "nav body";
+}
+
+@media (min-width: 700px) {
+    body {
+        grid-template-columns: 150px 1fr 150px;
+        grid-template-areas: "d a b" "c c c";
+    }
+}
+
+body > div {
+    outline: solid 1px #aaa;
+    padding: 10px;
+}
+
+.game {
+    grid-area: head;
+}
+
+.player {
+    grid-area: nav;
+}
+
+.rules {
+    grid-area: body;
+}

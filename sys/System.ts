@@ -1,10 +1,12 @@
-﻿import {net, Common, bind, basic, collection, utils, encoding,reflection} from './Corelib';
-import {context} from 'context';
+﻿import { net, Common, bind, basic, collection, utils, encoding, reflection } from './Corelib';
+import { context } from 'context';
 var _services = {};
 var _defualt: Controller.ProxyData;
 var apis = new collection.Dictionary<Function, Controller.Api<any>>("Apis", false);
-export declare type RequestMethodShema = net.RequestMethodShema;
+
+
 export module Controller {
+    export declare type RequestMethodShema = net.RequestMethodShema;
     export function Register(service: IService) {
         Object.freeze(service);
         Object.defineProperty(_services,
@@ -27,7 +29,7 @@ export module Controller {
 
         public abstract OnResponse(response: JSON, data: T, context: encoding.SerializationContext);
 
-        constructor( reg?: boolean) {
+        constructor(reg?: boolean) {
             apis.Set(this.GetType(), this);
         }
         public Register(method: RequestMethodShema) {
@@ -73,7 +75,7 @@ export module Controller {
     function messageType() { return mt || (mt = context.GetType('models.Message')); }
 
     export interface IService {
-        
+
         Name: string;
         OnResponse(proxy: ProxyCallback<any>, webr: net.QueeDownloader, json: IServiceResponse);
     }
@@ -86,7 +88,7 @@ export module Controller {
         sdata: any;
     }
 
-    export class ProxyCallback<T> extends net.RequestParams<T,net.QueeDownloader> {
+    export class ProxyCallback<T> extends net.RequestParams<T, net.QueeDownloader> {
         constructor(data: T,
             public param: any,
             public api: Api<T>,
@@ -105,7 +107,7 @@ export module Controller {
             var iss = true;
             try {
                 var r = sender.Request.IsSuccess ? ProxyCallback.parse(result.Response) : null;
-                
+
                 if (r && r.hasOwnProperty('__service__')) {
                     var sr: IServiceResponse = r;
                     if (sr.__service__) {
@@ -113,7 +115,7 @@ export module Controller {
                         if (s)
                             s.OnResponse(this, sender, sr);
                         if (sr.dropRequest) return;
-                        
+
                     }
                     iss = sr.iss;
                     r = sr.rdata;
@@ -127,7 +129,7 @@ export module Controller {
                 this.callBack(this, r, iss && this.IsSuccess, result);
         }
 
-        public OutputData():string {
+        public OutputData(): string {
             if ('string' === typeof this.data) return this.data as any as string;
             if (this.data instanceof ArrayBuffer) return this.data as any;
             var r = this.context == null;
@@ -186,11 +188,11 @@ export module Controller {
             this.http.Push(req, t, null);
         }
         public Push<T>(type: Function | reflection.GenericType, data: T, param: any, callBack?: RequestCallback<T>, method?: net.WebRequestMethod, costumize?: RequestCostumize<T>, serializer?: encoding.SerializationContext, beforRequest?: (req: net.IRequestUrl) => void, params?: net.IRequestParams) {
-			const api = this.apis.Get(type != null ? type : data.constructor);
-			const t = new ProxyCallback(data, param, api, serializer || new encoding.SerializationContext(true) || encoding.SerializationContext.GlobalContext, callBack);
+            const api = this.apis.Get(type != null ? type : data.constructor);
+            const t = new ProxyCallback(data, param, api, serializer || new encoding.SerializationContext(true) || encoding.SerializationContext.GlobalContext, callBack);
             const req = api.GetRequest(data, null, params);
             req.HasBody = true;
-			req.beforRequest = beforRequest;
+            req.beforRequest = beforRequest;
             if (method != undefined)
                 req.Method = method;
             if (costumize) costumize(req, t);
@@ -214,7 +216,7 @@ export module Controller {
             req.HasBody = true;
             req.Method = net.WebRequestMethod.Put;
             if (costumize) costumize(req, t);
-            this.http.Push(req, t,params);
+            this.http.Push(req, t, params);
         }
 
         public Get<T>(type: Function | reflection.GenericType, data: T, param: any, callBack?: RequestCallback<T>, costumize?: RequestCostumize<T>, serializer?: encoding.SerializationContext, params?: net.IRequestParams) {
@@ -251,7 +253,7 @@ export module sdata {
         Saved = 2,
         Updating = 4,
         Uploading = 8,
-        Updated = 16,   
+        Updated = 16,
         Frozed = 32
     }
     export interface INew {
@@ -319,7 +321,7 @@ export module sdata {
         public static getById(id: number, type: Function): DataRow {
             return undefined;
         }
-        FromJson(json: any, context: encoding.SerializationContext, update?: boolean): this {            
+        FromJson(json: any, context: encoding.SerializationContext, update?: boolean): this {
             if (typeof json === 'number') {
                 if (this.Stat >= DataStat.Updating)
                     return this;
@@ -335,7 +337,7 @@ export module sdata {
             }
             return this;
         }
-        
+
         //private t: string;
         public get TableName() {
             return context.NameOf(this.constructor).replace("models.", "");// this.t;
@@ -351,12 +353,12 @@ export module sdata {
         public static get QueryApi(): string {
             return this._QueryApi;
         }
-        constructor(id?: number) {super(id);}
+        constructor(id?: number) { super(id); }
         Update() {
-            
+
         }
         Upload() {
-            
+
         }
     }
     export abstract class DataTable<T extends DataRow> extends collection.List<T>{
@@ -450,7 +452,7 @@ export module sdata {
 
 
 export module base {
-    export  interface Vecteur<T> extends bind.DObject{
+    export interface Vecteur<T> extends bind.DObject {
         From: T;
         To: T;
         Check(val: T);
@@ -474,89 +476,10 @@ export module base {
         public static DPTo = bind.DObject.CreateField<number, NumberVecteur>('To', Number);
         get From() { return this.get(NumberVecteur.DPFrom); } set From(v: number) { this.set(NumberVecteur.DPFrom, v); }
         get To() { return this.get(NumberVecteur.DPTo); } set To(v: number) { this.set(NumberVecteur.DPTo, v); }
-        static __fields__() { return [NumberVecteur.DPFrom, NumberVecteur.DPTo];}
+        static __fields__() { return [NumberVecteur.DPFrom, NumberVecteur.DPTo]; }
         Check(val: number) {
             if (!val) return true;
             return (this.From == null || this.From <= val) && (this.To == null || this.To >= val);
         }
     }
-
-
 }
-
-
-
-
-export namespace System{
-    var co: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"];
-    class Color {            
-            toHex (t, e) {
-                t = parseInt(t, 10);
-                for (var i = ""; t > 0;)
-                    i = co[t % 16] + i, t = Math.floor(t / 16);
-                for (; i.length < e;)
-                    i = "0" + i;
-                return i
-            }
-            hexToDec (t) {
-                return parseInt(t, 16)
-            }
-            toRgb (t) {
-                var e, i, s, n;
-                return "string" != typeof t
-                    ? (e = t[0], i = t[1], s = t[2])
-                    : -1 != t.indexOf("rgb")
-                        ? (n = t.substr(t
-                            .indexOf("(") +
-                            1,
-                            t.lastIndexOf(")") - t.indexOf("(") - 1)
-                            .split(","), e = n[0], i = n[1], s = n[2])
-                        : ("#" == t.substr(0, 1) && (t = t.substr(1)), e = this.hexToDec(t.substr(0, 2)), i = this
-                            .hexToDec(t.substr(2, 2)), s = this
-                                .hexToDec(t
-                                    .substr(4, 2))), e = parseInt(e, 10) || 0, i = parseInt(i, 10) || 0, s =
-                    parseInt(s, 10) || 0,
-                    (0 > e || e > 255) && (e = 0), (0 > i || i > 255) && (i = 0), (0 > s || s > 255) && (s = 0), [e, i, s]
-            }
-            hsvToRgb (t, e, i) {
-                var s, n, a, r, h, o, l, c;
-                switch (s = Math
-                    .floor(t / 60) %
-                6, n = t / 60 - s, a = i * (1 - e), r = i * (1 - n * e), h = i * (1 - (1 - n) * e), o = 0, l = 0,
-                c = 0, s
-                ) {
-                    case 0:
-                        o = i, l = h, c = a;
-                        break;
-                    case 1:
-                        o = r, l = i, c = a;
-                        break;
-                    case 2:
-                        o = a, l = i, c = h;
-                        break;
-                    case 3:
-                        o = a, l = r, c = i;
-                        break;
-                    case 4:
-                        o = h, l = a, c = i;
-                        break;
-                    case 5:
-                        o = i, l = a, c = r
-                }
-                return o = Math.floor(255 * o), l = Math.floor(255 * l), c = Math.floor(255 * c), [o, l, c]
-            }
-            rgbToHsv (t, e, i) {
-                var s, n, a, r, h, o, l, c;
-                return s = t / 255, n = e / 255, a = i / 255, r = Math.min(s, n, a), h = Math
-                    .max(s, n, a), l = 0, o = 0 === h ? 0 : 1 - r / h, c = h,
-                    h == r
-                        ? l = 0
-                        : h == s && n >= a
-                            ? l = 60 * (n - a) / (h - r) + 0
-                            : h == s && a > n
-                                ? l = 60 * (n - a) / (h - r) + 360
-                                : h == n ? l = 60 * (a - s) / (h - r) + 120 : h == a && (l = 60 * (s - n) / (h - r) + 240),
-                    [l, o, c]
-            }
-        }
-    }

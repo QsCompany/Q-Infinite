@@ -28,7 +28,7 @@ export module Material {
             super(tmpl.template["qui-Canvas3D"], UI.TControl.Me as any);
         }
         private count = 0;
-        
+
         public setName(name: string, dom: HTMLElement, cnt: UI.JControl, e: bind.IJobScop) {
             this[name] = dom;
             if (name === 'galleryItems') {
@@ -38,7 +38,7 @@ export module Material {
         }
         initialize() {
             super.initialize();
-            
+
             //UI.JControl.LoadCss(context.GetPath('style.css'));
         }
         static ctor() {
@@ -47,7 +47,7 @@ export module Material {
             require('style|../../assets/Components/Canvas3D/style.css');
         }
     }
-    
+
     var _classes = [["move-right", "hidden"], ["cd-item-front"], ["cd-item-middle"], ["cd-item-back"], ["cd-item-out"], []];
     var _sclasses = ["move-right", "hidden", "cd-item-front", "cd-item-middle", "cd-item-back", "cd-item-out"];
     export class GalleryItem extends UI.ScopicTemplateShadow {
@@ -163,14 +163,14 @@ export module Material {
         }
 
         public GoPrev() {
-            
+
             var items = this.items;
             var osi = this.SelectedIndex;
             var csi = --this.SelectedIndex;
             if (osi === csi || osi <= 0) return this.ActivePrev = false;
 
             this.showPreviousSlide(items[osi], items[osi + 1], items[csi], items[osi + 2]);
-            
+
             //if (0 === Math.sin(566))
             //    for (var i = 0; i < 4; i++) {
             //        this.updateCss(csi + i, _classes[i], _classes[i + 1]);  //front
@@ -189,16 +189,16 @@ export module Material {
         private showNextSlide(itemToHide: HTMLLIElement, itemToShow: HTMLLIElement, itemMiddle: HTMLLIElement, itemToBack: HTMLLIElement) {
             if (itemToHide)
                 itemToHide.classList.add('move-right'), itemToHide.classList.remove('cd-item-front'),
-                    this.createEvent(itemToHide, 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend'.split(' '), (e, d) => { d.itemToHide.classList.add('hidden'); d.data.swap(); },this);
+                    this.createEvent(itemToHide, 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend'.split(' '), (e, d) => { d.itemToHide.classList.add('hidden'); d.data.swap(); }, this);
             if (itemToShow) itemToShow.classList.add('cd-item-front'), itemToShow.classList.remove('cd-item-middle');
             if (itemMiddle) itemMiddle.classList.add('cd-item-middle'), itemMiddle.classList.remove('cd-item-back');
             if (itemToBack) itemToBack.classList.add('cd-item-back'), itemToBack.classList.remove('cd-item-out');
         }
 
         private showPreviousSlide(itemToMiddle: HTMLLIElement, itemToBack: HTMLLIElement, itemToShow: HTMLLIElement, itemToOut: HTMLLIElement) {
-            if(itemToShow) itemToShow.classList.remove('hidden'),itemToShow.classList.add('cd-item-front');
-            if(itemToMiddle) itemToMiddle.classList.remove('cd-item-front'), itemToMiddle.classList.add('cd-item-middle');
-            if(itemToBack) itemToBack.classList.remove('cd-item-middle'), itemToBack.classList.add('cd-item-back');
+            if (itemToShow) itemToShow.classList.remove('hidden'), itemToShow.classList.add('cd-item-front');
+            if (itemToMiddle) itemToMiddle.classList.remove('cd-item-front'), itemToMiddle.classList.add('cd-item-middle');
+            if (itemToBack) itemToBack.classList.remove('cd-item-middle'), itemToBack.classList.add('cd-item-back');
             if (itemToOut) itemToOut.classList.remove('cd-item-back'), itemToOut.classList.add('cd-item-out');
 
             if (itemToShow) {
@@ -213,8 +213,8 @@ export module Material {
                 stop.t.swap();
             }
         }
-    
-        private createEvent<T>(itemToHide: Element, events: string[], callback: (e: Event, data: IOneEvent<T>) => void,data:T) {
+
+        private createEvent<T>(itemToHide: Element, events: string[], callback: (e: Event, data: IOneEvent<T>) => void, data: T) {
             if (!itemToHide) return;
             var x: IOneEvent<T> = {
                 callback: callback,
@@ -256,7 +256,7 @@ export module Material {
             this.callback(e, this);
         } catch (e) {
         }
-        
+
         for (var i = 0; i < this.events.length; i++)
             (this.itemToHide as Element).removeEventListener(this.events[i], this);
 

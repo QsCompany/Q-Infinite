@@ -1,5 +1,5 @@
 ﻿import { thread, basic, bind, encoding, mvc, reflection, math } from "./Corelib";
-import {UI} from './UI';
+import { UI } from './UI';
 import { context } from 'context';
 declare var $: any;
 var t = [1, 10, 100, 1000, 10000, 100000, 1e6, 1e7, 1e8, 1e9];
@@ -40,10 +40,10 @@ export function getTargetFrom(dom: Element) {
 }
 export module Jobs {
     export function InputChecks(name: string, check: (value: string) => boolean) { }
-    
+
     export function Load() { }
 
-    module InputJob  {
+    module InputJob {
         export function Register(name: string, check: (value: any) => boolean, freeze: boolean) {
             Object.defineProperty(checks, name, { value: check, configurable: !freeze, writable: !freeze, enumerable: false });
         }
@@ -54,8 +54,8 @@ export module Jobs {
             var telF = /(0{1}[2|3]{1}\d{7})/;
             var mail = /^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!\.)){0,61}[a-zA-Z0-9]?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!$)){0,61}[a-zA-Z0-9]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/;
             var name = /^[a-z|A-Z\s]*$/;
-            var username = /^([a-zA-Z\@][a-zA-Z\d\@\._]{5,20})$/;            
-			var dimention = /[\w\s\.\d\/\*\ \+\-\%\=°]*/;
+            var username = /^([a-zA-Z\@][a-zA-Z\d\@\._]{5,20})$/;
+            var dimention = /[\w\s\.\d\/\*\ \+\-\%\=°]*/;
             var url = /^(?!mailto:)(?:(?:https?|ftp):\/\/)?(?:\S+(?::\S*)?@)?(?:(?:(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))|localhost)(?::\d{2,5})?(?:\/[^\s]*)?$/i
             checks['readonly'] = (i) => false;
             checks['alphanumeric'] = (str): boolean => !!str.match(/^[a-zA-Z0-9]*$/);
@@ -89,7 +89,7 @@ export module Jobs {
                     return false;
                 return true;
             }
-            checks['tel'] = (i: string) => {                
+            checks['tel'] = (i: string) => {
                 i = i.trim();
                 return (telF.test(i) && i.length === 9) || (telM.test(i) && i.length === 10);
             };
@@ -119,7 +119,7 @@ export module Jobs {
             Object.freeze(telM);
             Object.freeze(telF);
         }
-        function Todo(job: bind.JobInstance, e: bind.EventArgs<any, any>): void {            
+        function Todo(job: bind.JobInstance, e: bind.EventArgs<any, any>): void {
             if (job.Ischanging) return;
             job.Ischanging = true;
             try {
@@ -137,7 +137,7 @@ export module Jobs {
             var check = (ji.dom as HTMLElement).getAttribute('db-check');
             if (check === 'readonly')
                 (ji.dom as HTMLInputElement).contentEditable = 'false';
-            ji.Checker =checks[check];
+            ji.Checker = checks[check];
             ji.Handle = this.handleEvent;
             this.Todo(ji, e);
             ji.addEventListener('ochange', hasValueProperty(ji.dom) ? 'change' : 'textContentChanged', ji);
@@ -157,22 +157,22 @@ export module Jobs {
             }
             t.Ischanging = false;
         }
-        function callback(e: Event) {            
-            
+        function callback(e: Event) {
+
         }
         function OnDispose(job: bind.JobInstance, e: bind.EventArgs<any, any>): void {
             job.removeEventListener('ochange');
         }
-        
-        export function Instance():basic.IJob {
+
+        export function Instance(): basic.IJob {
             return <basic.IJob>{ Name: Name, Todo: Todo, OnInitialize: OnInitialize, Check: Check, OnScopDisposing: OnDispose, OnError: OnError, handleEvent: handleEvent };
         }
         init();
     }
     var compiler = new basic.CodeCompiler();
-    
-    export class interpolation implements basic.IJob{
-        Name: string="$";
+
+    export class interpolation implements basic.IJob {
+        Name: string = "$";
         Todo(job: bind.JobInstance, e: bind.EventArgs<any, any>): void {
             var regs = job.getValue('regs') as basic.IReg[];
             var scp = job.Scop;
@@ -188,7 +188,7 @@ export module Jobs {
         OnError(job: bind.JobInstance, e: bind.EventArgs<any, any>): void {
         }
         OnInitialize(job: bind.JobInstance, e: bind.EventArgs<any, any>): void {
-            var d = job.dom.firstChild;
+            var d = job.dom.firstChild as Node;
             var arr = [];
             job.addValue("regs", arr);
             do {
@@ -197,7 +197,7 @@ export module Jobs {
                     if (reg.IsString) compiler.remove(reg);
                     else {
                         reg.stat = d;
-                        arr.push(reg);bind.Observer
+                        arr.push(reg); bind.Observer
                     }
                 }
             } while ((d = d.nextSibling));
@@ -214,13 +214,13 @@ export module Jobs {
 
         Name = 'checkbox';
         Todo(job: bind.JobInstance, e: bind.EventArgs<any, any>): void {
-            
+
             (job.dom as HTMLInputElement).checked = job.Scop.Value;
         }
         OnError(job: bind.JobInstance, e: bind.EventArgs<any, any>): void {
         }
         OnInitialize(job: bind.JobInstance, e: bind.EventArgs<any, any>): void {
-            
+
             this.Todo(job, e);
             job.addEventListener('change', 'change', job);
             job.Handle = this.Handle;
@@ -228,7 +228,7 @@ export module Jobs {
         OnScopDisposing(job: bind.JobInstance, e: bind.EventArgs<any, any>): void {
         }
         Handle(ji: bind.JobInstance, e: Event) {
-            
+
             var v = (ji.dom as HTMLInputElement).checked;
             ji.Scop.Value = v == null ? null : !!v;
         }
@@ -243,7 +243,7 @@ export module Jobs {
             job.Ischanging = true;
             try {
                 var val = job.Scop.Value;
-				val = val == null ? (job._store as any).def : val;
+                val = val == null ? (job._store as any).def : val;
                 if (job.dom instanceof HTMLInputElement)
                     (job.dom as HTMLInputElement).value = val;
                 else (job.dom as HTMLInputElement).textContent = val;
@@ -252,11 +252,11 @@ export module Jobs {
             job.Ischanging = false;
         }
         OnInitialize(ji: bind.JobInstance, e: bind.EventArgs<any, any>): void {
-            var d = ji.dom as HTMLElement;            
-			var check = d.getAttribute('db-check');
+            var d = ji.dom as HTMLElement;
+            var check = d.getAttribute('db-check');
             ji.addValue('max', parseFloat(d.getAttribute('max') || '9999999999'));
             ji.addValue('min', parseFloat(d.getAttribute('min') || '-9999999999'));
-			ji.addValue('def', parseFloat(d.getAttribute('default') || '0.00'));
+            ji.addValue('def', parseFloat(d.getAttribute('default') || '0.00'));
 
 
             if (check === 'readonly')
@@ -283,7 +283,7 @@ export module Jobs {
                 }
                 else
                     (dm as HTMLInputElement).value = String(Math.round((ji.Scop.Value || 0) * 1000) / 1000);
-                
+
             } catch (e) {
             }
             ji.Ischanging = false;
@@ -292,7 +292,7 @@ export module Jobs {
             job.removeEventListener('ochange');
         }
     }
-    
+
     export class AccordionSelectJob implements basic.IJob {
         private checks: basic.IValueCheck = {};
         Name: string = 'select';
@@ -328,7 +328,7 @@ export module Jobs {
                 t.Scop.Value = val;
             } catch (e) {
             }
-            
+
         }
         OnScopDisposing(job: bind.JobInstance, e: bind.EventArgs<any, any>): void {
         }
@@ -495,20 +495,20 @@ export module Jobs {
         },
         (ji, e) => {
         }));
-	export var ratingJob = bind.Register(new bind.Job("rateing",
-		 (ji, e) => {
-			var dm = <HTMLElement> ji.dom ;
-			var v = Math.round(ji.Scop.Value || 0);
-			var length = dm.childElementCount;
-			for (var i = 0; i < v; i++) {
-				(<HTMLElement>dm.children[i]).style.visibility = "visible";
-			}
-			for (var i = v; i < length; i++) {
-				(<HTMLElement>dm.children[i]).style.visibility = "hidden";
-			}
-		}, null, null,
-		(ji, e) => {
-			ratingJob.Todo(ji, e);
+    export var ratingJob = bind.Register(new bind.Job("rateing",
+        (ji, e) => {
+            var dm = <HTMLElement>ji.dom;
+            var v = Math.round(ji.Scop.Value || 0);
+            var length = dm.childElementCount;
+            for (var i = 0; i < v; i++) {
+                (<HTMLElement>dm.children[i]).style.visibility = "visible";
+            }
+            for (var i = v; i < length; i++) {
+                (<HTMLElement>dm.children[i]).style.visibility = "hidden";
+            }
+        }, null, null,
+        (ji, e) => {
+            ratingJob.Todo(ji, e);
         }));
     export var LabelJob = bind.Register({
         Name: "enable",
@@ -620,13 +620,13 @@ export module Jobs {
         },
         OnInitialize(ji: bind.JobInstance, e) {
             var d = ji.dom as HTMLElement;
-            var dt:any = d.getAttribute('db-data');
+            var dt: any = d.getAttribute('db-data');
             if (dt) {
                 dt = dt.split(',');
                 if (dt.length == 1) dt = [dt[0], 'none'];
                 ji.addValue('data', dt);
             }
-            var ofType:any = d.getAttribute('ofType');
+            var ofType: any = d.getAttribute('ofType');
             if (ofType)
                 ji.addValue('ofType', ofType);
             ji.addValue('target', getTarget(ji));
@@ -645,11 +645,11 @@ export module Jobs {
 
     export var LabelJob = bind.Register({
         Name: "editable",
-        Todo(ji, e) {            
+        Todo(ji, e) {
             var c = !ji.Scop.Value;
             var ins = $('input', ji.dom) as HTMLInputElement[];
             for (var i = 0; i < ins.length; i++) {
-                var b = ins[i] ;
+                var b = ins[i];
                 b.disabled = c;
             }
         },
@@ -661,7 +661,7 @@ export module Jobs {
     var defaultDispaly = ['none', ''];
     export var LabelJob = bind.Register({
         Name: "toggle",
-        Todo(ji, i) {            
+        Todo(ji, i) {
         },
         OnInitialize(ji, e) {
             ji.addEventListener('domclick', 'click', (e) => {
@@ -690,8 +690,8 @@ export module Jobs {
             var d = dm.parentElement;
             var dsp = d.style.display;
             var val = ji.Scop.Value;
-            {}
-            if (val===false) {
+            { }
+            if (val === false) {
                 if (dsp == 'none') return;
                 ji.addValue('display', dsp);
                 d.style.display = 'none';
@@ -732,8 +732,8 @@ export module Jobs {
     export var TextJob = bind.Register(new FloatJob());
 
     export var TextJob = bind.Register(new AccordionSelectJob());
- 
-   
+
+
 
     export var CheckJob = bind.Register(new bind.Job("check",
         (ji, e) => {
@@ -747,8 +747,120 @@ export module Jobs {
         (ji, e) => {
 
         }));
+
+    bind.Register({
+        Name: 'enumoption',
+        OnInitialize: function (j, e) {
+            if (!(j.dom instanceof HTMLInputElement))
+                throw "Dom must be Select";
+            var dm = j.dom;
+            var c = dm.getAttribute('enum');
+            var et = dm.getAttribute('enum-type');
+            if (et !== 'string')
+                et = 'number';
+            var lst = basic.getEnum(c);
+            var ac = new UI.ProxyAutoCompleteBox(new UI.Input(j.dom), lst);
+            ac.Box.Parent = UI.Desktop.Current;
+            ac.initialize();
+            var p = { ac: ac, lst: lst, et: et };
+            j.addValue('params', p);
+            this.Todo(j, e);
+            ac.OnValueChanged(ac, function (b, o, n) {
+                return j.Scop.Value = et === 'string' ? (n ? n.Name : lst.Get(0)) : n ? n.Value : 0;
+            });
+        }, Todo: function (ji, e) {
+            var p = ji.getValue('params');
+            var v = ji.Scop.Value;
+            p.ac.Value = p.et === 'number' ? basic.EnumValue.GetValue(p.lst, v || 0) : v;
+        }
+    });
+
+    bind.Register({
+        Name: 'enum',
+        OnInitialize: function (j, e) {
+            if (!(j.dom instanceof HTMLSelectElement))
+                throw "Dom must be Select";
+            var s = j.Scop;
+            var dm = j.dom as HTMLElement;
+            dm.contentEditable = 'true';
+            var c = dm.getAttribute('enum') || dm.getAttribute('type') || dm.getAttribute('rtype');
+            var lst = basic.getEnum(c);
+            for (var i = 0; i < lst.Count; i++) {
+                var o = document.createElement('option');
+                var m = lst.Get(i);
+                o.value = String(m.Value);
+                o.text = m.Name;
+                j.dom.appendChild(o);
+            }
+            j.addValue('list', lst);
+            this.Todo(j, e);
+            j.dom.addEventListener('change', function (e) {
+                if (j._store.inter)
+                    return;
+                j._store.inter = true;
+                try {
+                    var v = this.options[this.selectedIndex] as any;
+                    v = parseFloat((v && v.value) as any);
+                    j.Scop.Value = isFinite(v) ? v : null;
+                }
+                catch (_a) { }
+                j._store.inter = false;
+            });
+        }, Todo: function (ji, e) {
+            if (ji._store.inter)
+                return;
+            ji._store.inter = true;
+            try {
+                var t = ji.getValue('list');
+                var v = basic.EnumValue.GetValue(t, ji.Scop.Value);
+                v = v && t.IndexOf(v);
+                (ji.dom as HTMLSelectElement).selectedIndex = v as any;
+            }
+            catch (_a) { }
+            ji._store.inter = false;
+        }
+    });
+    bind.Register({
+        Name: 'enumstring',
+        OnInitialize: function (j, e) {
+            var dm = j.dom as HTMLElement;
+            var c = dm.getAttribute('type');
+            var lst = basic.getEnum(c);
+            j.addValue('params', lst);
+            this.Todo(j, e);
+        }, Todo: function (ji, e) {
+            var p = ji.getValue('params');
+            var v = ji.Scop.Value;
+            ji.dom.textContent = typeof v === 'string' ? v : p.Get(v || 0).Name;
+        }
+    });
+    bind.Register({
+        Name: 'enum2string',
+        OnInitialize: function (j, e) {
+            var dm = j.dom as HTMLElement;
+            var c = dm.getAttribute('type');
+            var lst = basic.getEnum(c);
+            j.addValue('params', lst);
+            this.Todo(j, e);
+        }, Todo: function (ji, e) {
+            var p = ji.getValue('params');
+            var v = ji.Scop.Value;
+            ji.dom.textContent = typeof v === 'string' ? v : p.Get(v || 0).Name;
+        }
+    });
+    var d;
+    bind.Register({
+        Name: 'tostring', OnInitialize: (d = function (ji, i) {
+            var b = ji.Scop.Value || '';
+            if (typeof b !== 'string')
+                b = (b && b.toString()) || '';
+            if (b.length > 45)
+                b = b.substring(0, 45) + '...';
+            ji.dom.textContent = b;
+        }), Todo: d
+    });
 }
 
 function sealed(target) {
-    
+
 }

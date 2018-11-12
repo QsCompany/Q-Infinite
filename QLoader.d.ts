@@ -1,3 +1,41 @@
+declare var __extends: any;
+declare var exports: any;
+declare var __global: {
+    https: boolean;
+    supportTemplate: boolean;
+    useListenerOrMutation: boolean;
+    ApiServer?: System.basics.Url;
+    CaseSensitive: boolean;
+    GetApiAddress(url: string): string;
+};
+declare var envirenment: {
+    isBrowser: boolean;
+    isWebWorker: boolean;
+    isOpera: boolean;
+    isChromeApp: boolean;
+    isMobile: boolean;
+};
+declare var clone: (obj: any) => any;
+declare var $: (selector: any, context: any) => void;
+declare var $defineProperty: (o: any, p: string, attributes: PropertyDescriptor & ThisType<any>, onError?: (o: any, p: string, attributes: PropertyDescriptor & ThisType<any>) => any) => any;
+declare var $bench: (f: () => any, timeSpan: number) => number;
+declare var w: Window;
+declare class Map {
+    new(): any;
+    get(key: any): any;
+    set(key: any, value: any): any;
+    delete(key: any): any;
+}
+declare var chrome: {
+    storage: {
+        local: {
+            get: any;
+            set: any;
+            clear: any;
+            remove: any;
+        };
+    };
+};
 declare var enumProperty: RegExp;
 declare var enumPropertyEs6: string;
 declare var QReqConfig: any;
@@ -33,12 +71,8 @@ declare enum ModuleStat {
     Defined = 4,
     Executing = 5,
     Executed = 6,
-    Failed = 7
-}
-declare class Map {
-    public delete(key);
-    public get(key):any;
-    public set(key, value);
+    Failed = 7,
+    Forbidden = 111
 }
 declare namespace System {
     interface IRef<T> {
@@ -91,6 +125,7 @@ declare namespace System {
             private getUrl;
             private init;
             readonly IsRooted: boolean;
+            readonly IsRelative: boolean;
             getHost(url: string): void;
             getFullHost(url: string): void;
             Combine(path: string | Url): Url;
@@ -101,6 +136,8 @@ declare namespace System {
             SameHostAs(url: Url): boolean;
             static RevalidatePath(ary: string[], isFullPath?: boolean): void;
             intersect(url: Url): Url;
+            static getUrl(path: string[], name?: string, rooted?: boolean): Url;
+            getRelativePath(): Url;
             readonly IsInternal: boolean;
             static rootUrl: Url;
         }
@@ -151,8 +188,8 @@ declare namespace System {
             OnComplete: EventListener;
             constructor();
             method: 0 | WebRequestMethod.Post | WebRequestMethod.Head | WebRequestMethod.Put | WebRequestMethod.Delete | WebRequestMethod.Options | WebRequestMethod.Connect;
-            ResponseType: ResponseType.Document | ResponseType.Text | ResponseType.ArrayBuffer | ResponseType.Blob | ResponseType.json;
-            _onprogress(e: any): void;
+            ResponseType: ResponseType;
+            _onprogress(_e: any): void;
             readonly IsSuccess: boolean;
             Download<T>(url: basics.IUrl, data: downloadCallback<T>): void;
             readonly Response: any;
@@ -182,7 +219,7 @@ declare namespace System {
             OnFinish: EventListener;
             constructor();
             readonly Request: WebRequest;
-            DownloadComplete(xmlRequest: any): void;
+            DownloadComplete(_xmlRequest: any): void;
             Push<T>(url: basics.IUrl, data: downloadCallback<T>): void;
             Start(): void;
             Next(): void;
@@ -198,26 +235,6 @@ declare namespace System {
     function getCmdCopy(dest: string): any;
 }
 declare function ValidateImport(...styles: any[]): void;
-declare var __extends: any;
-declare var exports: any;
-declare var __global: {
-    https: boolean;
-    supportTemplate: boolean;
-    useListenerOrMutation: boolean;
-    ApiServer?: System.basics.Url;
-    CaseSensitive: boolean;
-    GetApiAddress(url: string): string;
-};
-declare var envirenment: {
-    isBrowser: boolean;
-    isWebWorker: boolean;
-    isOpera: boolean;
-};
-declare function clone<T>(obj: T): T;
-declare var $: (selector: any, context: any) => void;
-declare var $defineProperty: (o: any, p: string, attributes: PropertyDescriptor & ThisType<any>, onError?: (o: any, p: string, attributes: PropertyDescriptor & ThisType<any>) => any) => any;
-declare var $bench: (f: () => any, timeSpan: number) => number;
-declare var w: Window;
 interface IContext {
     context: IContext;
     CanAccessToMe(type: string, folder: string, name: string): any;
@@ -228,7 +245,10 @@ interface IContext {
     GetStat(): ModuleStat;
     OnStat(target: string, stat: ModuleStat, callback: (me: string, target: string, cstat: ModuleStat, stat: ModuleStat) => void): any;
     OnGStat(stat: ModuleStat, callback: (me: string, target: string, cstat: ModuleStat, stat: ModuleStat) => void): any;
+    SetSuperVisor(callback: (url: IUrl) => boolean): any;
     Assemblies: any;
+    ExecuteModule(success: boolean): any;
+    HandleExecution(): any;
 }
 interface IEnum {
     [n: string]: number;
@@ -246,7 +266,10 @@ declare module "context" {
     function GetStat(): ModuleStat;
     function OnStat(target: string, stat: ModuleStat, callback: (me: string, target: string, cstat: ModuleStat, stat: ModuleStat) => void): any;
     function OnGStat(stat: ModuleStat, callback: (me: string, target: string, cstat: ModuleStat, stat: ModuleStat) => void): any;
+    function SetSuperVisor(callback: (url: IUrl) => boolean): any;
     var Assemblies: any;
+    function ExecuteModule(success: boolean): any;
+    function HandleExecution(): any;
 }
 declare interface ITemplateModule {
     get(name: string): HTMLTemplateElement;
@@ -269,8 +292,8 @@ declare module "json|*" {
 declare module "html|*" {
     const value: any;
     export default value;
-    function Validate(): any;
-    var context: IContext;
+    export function Validate(): any;
+    export var context: IContext;
 }
 declare module "style|*" {
     function require(path: string, callback: (e: any) => void, onError: () => void): any;
@@ -344,3 +367,4 @@ interface ITemplatePlugin {
     Validate(): any;
     context: IContext;
 }
+//# sourceMappingURL=qloader.d.ts.map

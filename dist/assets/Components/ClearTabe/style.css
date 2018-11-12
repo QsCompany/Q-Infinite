@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100');
+
+ClearTable {
+    background-color: #3e94ec;
+    font-family: "Roboto", helvetica, arial, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    text-rendering: optimizeLegibility;
+    width: 100%;
+    height: 100%;
+    padding:5px;
+    display:block;
+}
+
+    ClearTable div.table-title {
+        display: block;
+        margin: auto;
+        padding: 5px;
+        width: 100%;
+    }
+
+    ClearTable .table-title h3 {
+        /*color: #fafafa;*/
+        font-size: 30px;
+        /*font-weight: 400;*/
+        font-style: normal;
+        font-family: "Roboto", helvetica, arial, sans-serif;
+        text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+        text-transform: uppercase;
+        color: black;
+        font-weight: 600;
+    }
+
+    ClearTable .table-fill {
+        background: white;
+        border-radius: 3px;
+        border-collapse: collapse;
+        margin: auto;
+        padding: 5px;
+        width: 100%;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    ClearTable th {
+        color: #D5DDE5;
+        background: #3e454c/*#1b1e24*/;
+        border-bottom: 4px solid #9ea7af;
+        border-right: 1px solid #343a45;
+        font-size: 23px;
+        font-weight: 100;
+        padding: 24px;
+        text-align: left;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        vertical-align: middle;
+        text-align: center;
+    }
+
+        ClearTable th:first-child {
+            border-top-left-radius: 3px;
+        }
+
+        ClearTable th:last-child {
+            border-top-right-radius: 3px;
+            border-right: none;
+        }
+
+    ClearTable tr {
+        border-top: 1px solid #C1C3D1;
+        border-bottom: 1px solid #C1C3D1;
+        color: #666B85;
+        font-size: 16px;
+        font-weight: normal;
+        text-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
+        text-align:left;
+    }
+    ClearTable tr:hover td {
+        background: #4E5066;
+        color: #FFFFFF;
+        border-top: 1px solid #22262e;
+    }
+
+        ClearTable tr:first-child {
+            border-top: none;
+        }
+
+        ClearTable tr:last-child {
+            border-bottom: none;
+        }
+
+            ClearTable tr:last-child td:first-child {
+                border-bottom-left-radius: 3px;
+            }
+
+            ClearTable tr:last-child td:last-child {
+                border-bottom-right-radius: 3px;
+            }
+
+        ClearTable tr:nth-child(odd) td {
+            background: #EBEBEB;
+        }
+
+        ClearTable tr:nth-child(odd):hover td {
+            background: #4E5066;
+        }
+
+    ClearTable td {
+        background: #FFFFFF;
+        padding: 10px;
+        text-align: left;
+        vertical-align: middle;
+        font-weight: 300;
+        font-size: 18px;
+        text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+        border-right: 1px solid #C1C3D1;
+    }
+
+        ClearTable td:last-child {
+            border-right: 0px;
+        }
+
+    .text-left {
+        text-align: left;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    .text-left {
+        text-align: left;
+    }
+
+    .text-center {
+        text-align: center;
+    }

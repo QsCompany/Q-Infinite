@@ -23,16 +23,16 @@
         keyframesRule: /^@[^\s]*keyframes/,
         multipleSpaces: /\s+/g
     }
-}
-export enum ModuleStat {
-    New = 0,
-    Downloading = 1,
-    Downloaded = 2,
-    Defining = 3,
-    Defined = 4,
-    Executing = 5,
-    Executed = 6,
-    Failed = 7
-}
 
-Object.freeze(Consts);
+    export enum ModuleStat {
+        New = 0,
+        Downloading = 1,
+        Downloaded = 2,
+        Defining = 3,
+        Defined = 4,
+        Executing = 5,
+        Executed = 6,
+        Failed = 7
+    }
+    Object.freeze(typeof Consts === "undefined" ? {} : Consts);
+}

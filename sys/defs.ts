@@ -1,10 +1,10 @@
 ﻿import { basic, bind } from './Corelib';
-import { UI as _UI } from './UI';
+import { UI } from './UI';
 export module defs {
-    export namespace UI {
-        export interface IPage extends _UI.JControl, _UI.IService {
+    export namespace $UI {
+        export interface IPage extends UI.JControl, UI.IService {
             Name: string;
-            HasSearch: _UI.SearchActionMode;
+            HasSearch: UI.SearchActionMode;
             OnSearche(o?: string, n?: string);
             OnDeepSearche();
             OnContextMenu(e: MouseEvent);
@@ -12,13 +12,13 @@ export module defs {
             OnSelected: bind.EventListener<(p: this) => void>;
             Update();
             OnKeyDown(e: KeyboardEvent);
-            ContextMenu?: _UI.ContextMenu;
+            ContextMenu?: UI.ContextMenu;
         }
 
-        export interface IApp extends _UI.JControl {
+        export interface IApp extends UI.JControl {
             Name: string;
-            SearchBox: _UI.ActionText;
-            Foot: _UI.ServiceNavBar<_UI.IItem>;
+            SearchBox: UI.ActionText;
+            Foot: UI.ServiceNavBar<UI.IItem>;
             Update();
             OnContextMenu(e: MouseEvent);
             OnKeyDown(e: KeyboardEvent): any | void;
@@ -33,11 +33,11 @@ export module defs {
             SelectedPage: IPage;
             SelectNaxtPage();
             SelectPrevPage();
-            CloseModal(m: _UI.Modal);
-            OpenModal(m: _UI.Modal);
-            CurrentModal: _UI.Modal;
+            CloseModal(m: UI.Modal);
+            OpenModal(m: UI.Modal);
+            CurrentModal: UI.Modal;
             IsAuthentication: boolean;
-            OpenContextMenu<T>(cm: _UI.IContextMenu<T>, e: _UI.IContextMenuEventArgs<T>): boolean;
+            OpenContextMenu<T>(cm: UI.IContextMenu<T>, e: UI.IContextMenuEventArgs<T>): boolean;
             CloseContextMenu<T>(r?: T);
         }
         export interface IAuthApp extends IApp {

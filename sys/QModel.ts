@@ -43,13 +43,13 @@ export namespace models {
 
 
         public static DPAbortText = bind.DObject.CreateField<string, Message>("AbortText", String);
-        public AbortText: string; 
+        public AbortText: string;
 
         public CancelText: string;
 
         public privateDecompress: boolean;
 
-        static __fields__() { return [Message.DPContent, Message.DPTitle, Message.DPOkText, Message.DPCancelText,this.DPAbortText, Message.DPAction, Message.DPType, Message.DPData]; }
+        static __fields__() { return [Message.DPContent, Message.DPTitle, Message.DPOkText, Message.DPCancelText, this.DPAbortText, Message.DPAction, Message.DPType, Message.DPData]; }
 
         constructor(id: number, message?: string) {
             super(id || basic.New());

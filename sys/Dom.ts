@@ -1,17 +1,18 @@
-﻿var j = {
-    "[object Boolean]": "boolean",
-    "[object Number]": "number",
-    "[object String]": "string",
-    "[object Function]": "function",
-    "[object Array]": "array",
-    "[object Date]": "date",
-    "[object RegExp]": "regexp",
-    "[object Object]": "object",
-    "[object Error]": "error",
-    "[object Symbol]": "symbol"
-};
-var k = j.toString;
+﻿
 export module Dom {
+    var j = {
+        "[object Boolean]": "boolean",
+        "[object Number]": "number",
+        "[object String]": "string",
+        "[object Function]": "function",
+        "[object Array]": "array",
+        "[object Date]": "date",
+        "[object RegExp]": "regexp",
+        "[object Object]": "object",
+        "[object Error]": "error",
+        "[object Symbol]": "symbol"
+    };
+    var k = j.toString;
     function isWindow(a) {
         return null != a && a === a.window
     }
@@ -24,7 +25,7 @@ export module Dom {
     function isFunction(a) {
         return "function" === type(a)
     }
-    export function offset(f: Element) {        
+    export function offset(f: Element) {
         if (f) {
             if (f.getClientRects().length) {
                 var d = f.getBoundingClientRect();
@@ -61,7 +62,7 @@ export module Dom {
             (left + width) > window.pageXOffset
         );
     }
-    export function elementEntirelyInViewport (el:HTMLElement) {
+    export function elementEntirelyInViewport(el: HTMLElement) {
         var top = el.offsetTop;
         var left = el.offsetLeft;
         var width = el.offsetWidth;

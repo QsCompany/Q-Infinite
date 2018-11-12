@@ -1,0 +1,97 @@
+.heavyTable-container {
+    background: steelblue;
+    font-family: Open Sans, arial;
+    box-sizing: border-box;
+    display: block;
+    height: inherit;
+}
+
+    .heavyTable-container table.heavyTable {
+        width: 100%;
+        /*max-width: 600px;*/
+        /*height: 320px;*/
+        border-collapse: collapse;
+        border: 1px solid #38678f;
+        /*margin: 50px auto;*/
+        background: white;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        animation: float 5s infinite;
+
+    }
+
+        .heavyTable-container table.heavyTable tr {
+            border-bottom: 1px solid #cccccc;
+            /*min-height: 65px;
+            height: 65px;*/
+        }
+
+            .heavyTable-container table.heavyTable tr.selected {
+                background: #eae9d2;
+                z-index: auto;
+            }
+            .heavyTable-container table.heavyTable tr:last-child {
+                border-bottom: 0;
+            }
+
+            .heavyTable-container table.heavyTable tr > th {
+                background: steelblue;
+                /*width: 25%;*/
+                padding:20px;
+                font-weight: lighter;
+                text-shadow: 0 1px 0 #38678f;
+                color: white;
+                border: 1px solid #38678f;
+                box-shadow: inset 0 1px 2px #568ebd;
+                transition: all 0.2s;
+                text-align:center;
+                font-size:1.2em;
+            }
+
+            .heavyTable-container table.heavyTable tr > td {
+                border-right: 1px solid #cccccc;
+                padding: 15px;
+                transition: all 0.2s;
+                -ms-text-overflow: ellipsis;
+                -o-text-overflow: ellipsis;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+
+                .heavyTable-container table.heavyTable tr > td:last-child {
+                    border-right: 0;
+                }
+
+                .heavyTable-container table.heavyTable tr > td.selected {
+                    background: #d7e4ef;
+                    z-index: auto;
+                }
+
+                .heavyTable-container table.heavyTable tr > td input {
+                    font-size: 14px;
+                    background: none;
+                    outline: none;
+                    border: 0;
+                    display: table-cell;
+                    height: 100%;
+                    width: 100%;
+                }
+
+                    .heavyTable-container table.heavyTable tr > td input:focus {
+                        box-shadow: 0 1px 0 steelblue;
+                        color: steelblue;
+                    }
+
+        .heavyTable-container table.heavyTable a {
+            color: white;
+        }
+
+        .heavyTable-container table.heavyTable ::-moz-selection {
+            background: steelblue;
+            color: white;
+        }
+
+        .heavyTable-container table.heavyTable ::selection {
+            background: #eae9d2;
+            color: white;
+        }

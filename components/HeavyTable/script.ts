@@ -1,7 +1,8 @@
 import { UI } from "../../sys/UI";
 import { collection, bind, reflection, ScopicControl, basic, helper } from "../../sys/Corelib";
 import { template } from "template|../../assets/Components/HeavyTable/dom.htm";
-import { ref } from "../../sys/Syntaxer";
+import { Parser } from "../../sys/Syntaxer";
+
 export namespace Material {
     export interface OrderMap {
         factorHandled?: boolean;
@@ -21,7 +22,7 @@ export namespace Material {
         public Rebound: boolean;
         public visibleCols: number[];
         private Controller: bind.Controller;
-        
+
         constructor(private cols: UI.help.IColumnTableDef[]) {
             super(template.get("heavyTable") as any, UI.help.createTemplate(cols));
             this.Controller = bind.Controller.Attach(this, this);
@@ -59,7 +60,7 @@ export namespace Material {
             }
         }
         currentOrderMap: OrderByEventArgs<this>;
-        private _orderHandler: basic.ITBindable<(e:OrderByEventArgs<this>) => void>;
+        private _orderHandler: basic.ITBindable<(e: OrderByEventArgs<this>) => void>;
         private orderMap: { [name: string]: OrderMap } = {};
         public setOrderHandler<Owner>(handler: basic.ITBindable<(e: OrderByEventArgs<this>) => void>) {
             this._orderHandler = handler;
@@ -75,7 +76,7 @@ export namespace Material {
                 this._selectedCell.textContent = this.oldInnerText;
             return true;
         }
-        private beginEdit():boolean {
+        private beginEdit(): boolean {
             return this.edit(this.selectCell());
         }
         edit(currentElement: HTMLTableDataCellElement) {
@@ -94,7 +95,7 @@ export namespace Material {
             return this._x === this.ColCount() - 1 && this._y === this.Source.Count - 1;
         }
 
-        OnKeyDown(e: KeyboardEvent):boolean {
+        OnKeyDown(e: KeyboardEvent): boolean {
             if (this.isfocussed && e.keyCode === 27) {
                 if (this.isfocussed)
                     this.endEdit(false);
@@ -200,19 +201,19 @@ export namespace Material {
             require('style|../../assets/Components/HeavyTable/style.css');
         }
     }
-}
 
-ScopicControl.register('heavytable', (e:ScopicControl.ControlCreatorEventArgs) => {
-    var tableDef = e.dom.getAttribute('tableDef');
-    var tableDEF = e.currentScop.getScop(tableDef, false);
-    var x = new Material.HeavyTable(tableDEF.Value);
-    tableDEF.Dispose();
-    if (e.dom.hasAttribute('bind-to-scop')) {
-        if (e.currentScop)
-            e.currentScop.OnPropertyChanged(bind.Scop.DPValue, (s, e) => {
-                x.Source = e._new;
-            }, x);
-        x.OnInitialized = x => x.Source = e.currentScop.Value;
-    }
-    return x;
-});
+    ScopicControl.register('heavytable', (e: ScopicControl.ControlCreatorEventArgs) => {
+        var tableDef = e.dom.getAttribute('tableDef');
+        var tableDEF = e.currentScop.getScop(tableDef, false);
+        var x = new Material.HeavyTable(tableDEF.Value);
+        tableDEF.Dispose();
+        if (e.dom.hasAttribute('bind-to-scop')) {
+            if (e.currentScop)
+                e.currentScop.OnPropertyChanged(bind.Scop.DPValue, (s, e) => {
+                    x.Source = e._new;
+                }, x);
+            x.OnInitialized = x => x.Source = e.currentScop.Value;
+        }
+        return x;
+    });
+}

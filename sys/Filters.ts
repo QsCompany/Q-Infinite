@@ -1,5 +1,5 @@
-﻿import {mvc, utils, basic, thread, encoding, net, bind, reflection, collection, ScopicCommand } from './Corelib';
-import {UI} from './UI';
+﻿import { mvc, utils, basic, thread, encoding, net, bind, reflection, collection, ScopicCommand } from './Corelib';
+import { UI } from './UI';
 
 export module filters {
     export namespace scopic {
@@ -10,12 +10,12 @@ export module filters {
             shift: string;
             max: string;
         }
-        export class ListFilter<T> extends bind.Filter<collection.List<T>, collection.ExList<T, list. StringPatent<T>>>{
+        export class ListFilter<T> extends bind.Filter<collection.List<T>, collection.ExList<T, list.StringPatent<T>>>{
 
             private isConst: boolean;
-            constructor(s: bind.Scop, m: bind.BindingMode,private p: string, private fl?: collection.ExList<T, filters.list.StringPatent<T>>) {
+            constructor(s: bind.Scop, m: bind.BindingMode, private p: string, private fl?: collection.ExList<T, filters.list.StringPatent<T>>) {
                 super(s, 1);
-                
+
             }
             private sourceBind: bind.TwoBind<any>;
             private getFilter(s: any): any {
@@ -154,7 +154,7 @@ export module filters {
         export class StringFilter<T> extends utils.Filter<T, StringPatent<T>> {
             private deb: number;
             private fin: number;
-            
+
             public Begin(deb: number, count: number) {
             }
             IsMatch(i: number, item: T) {
@@ -232,7 +232,7 @@ export module filters {
                 var r = !this.right || this.right.Check(item);
                 if (r == null) return null;
                 return l && r;
-            }            
+            }
             Clone() {
                 return new ANDPatentGroup(this.left, this.right);
             }
@@ -246,7 +246,7 @@ export module filters {
                 if (l == null) return null;
                 var r = !!this.right && this.right.Check(item);
                 if (r == null) return null;
-                return r || l;                
+                return r || l;
             }
         }
         export class FilterGroup<T> extends utils.Filter<T, PatentGroup<T>> {
